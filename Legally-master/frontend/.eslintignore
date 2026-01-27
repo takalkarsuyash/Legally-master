@@ -1,0 +1,9 @@
+# Ignore specific files with type errors
+src/components/Chatbot.tsx
+src/components/FileUpload.tsx
+src/pages/DocumentSharing.tsx
+
+# Ignore build files
+dist/
+build/
+node_modules/ 

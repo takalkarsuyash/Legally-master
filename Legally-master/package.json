@@ -1,0 +1,26 @@
+{
+  "name": "legale",
+  "version": "1.0.0",
+  "description": "LegalTech AI Platform",
+  "private": true,
+  "scripts": {
+    "frontend": "cd frontend && npm run dev",
+    "frontend:build": "cd frontend && npm run build",
+    "frontend:install": "cd frontend && npm install",
+    "frontend:lint": "cd frontend && npm run lint",
+    "frontend:preview": "cd frontend && npm run preview"
+  },
+  "workspaces": [
+    "frontend"
+  ],
+  "keywords": [
+    "legal-tech",
+    "gdg",
+    "frontend"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@react-oauth/google": "^0.12.2"
+  }
+}
