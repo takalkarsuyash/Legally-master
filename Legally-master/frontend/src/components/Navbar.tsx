@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useCallback, useMemo, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import { Menu, X } from "lucide-react";
@@ -21,23 +22,25 @@ const Navbar: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const { t } = useTranslation();
+
   const navItems: ReadonlyArray<NavItem> = useMemo(
     () => [
-      { label: "Summarization", id: "summarisation", path: "/summarisation" },
-      { label: "Query", id: "doc-query", path: "/query" },
-      { label: "Draft", id: "draft", path: "/draft" },
+      { label: t("navbar.summarisation"), id: "summarisation", path: "/summarisation" },
+      { label: t("navbar.query"), id: "doc-query", path: "/query" },
+      { label: t("navbar.draft"), id: "draft", path: "/draft" },
       {
-        label: "Property Tax",
+        label: t("navbar.property_tax"),
         id: "property-tax",
         path: "/property-tax",
       },
       {
-        label: "Find Lawyer",
+        label: t("navbar.find_lawyer"),
         id: "find-lawyer",
         path: "/find-lawyer",
       },
     ],
-    [],
+    [t],
   );
 
   const handleScroll = useCallback(() => {
@@ -140,7 +143,7 @@ const Navbar: React.FC = () => {
                    </Link>
                 ) : (
                   <Link to="/login" className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition font-semibold">
-                     Sign In
+                     {t("navbar.login")}
                   </Link>
                 )}
               </motion.div>

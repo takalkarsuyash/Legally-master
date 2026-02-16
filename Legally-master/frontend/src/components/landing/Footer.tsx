@@ -15,7 +15,10 @@ const sectionFadeInUp: Variants = {
   },
 };
 
+import { useTranslation } from "react-i18next";
+
 const Footer: React.FC = () => {
+  const { t } = useTranslation();
   return (
     <footer
       id="footer"
@@ -36,9 +39,7 @@ const Footer: React.FC = () => {
               <span className="text-xl font-bold">LegalEase</span>
             </div>
             <p className="text-sm text-gray-600">
-              Empowering legal professionals with AI to streamline research,
-              documentation, and case management within the Indian legal
-              ecosystem.
+              {t('landing.footer.desc')}
             </p>
 
             <div className="flex gap-3 mt-4">
@@ -75,21 +76,31 @@ const Footer: React.FC = () => {
           {/* Footer Links */}
           {[
             {
-              title: "Product",
+              title: t('landing.footer.sections.product'),
               links: [
-                "Case Research Tool",
-                "Document Drafting",
-                "Case Management",
-                "Analytics Dashboard",
+                { label: t('landing.footer.links.research'), to: "/research" },
+                { label: t('landing.footer.links.drafting'), to: "/draft" },
+                { label: t('landing.footer.links.management'), to: "/management" },
+                { label: t('landing.footer.links.analytics'), to: "/analytics" },
               ],
             },
             {
-              title: "Company",
-              links: ["About Us", "Careers", "Press", "Contact"],
+              title: t('landing.footer.sections.company'),
+              links: [
+                { label: t('landing.footer.links.about'), to: "/about" },
+                { label: t('landing.footer.links.careers'), to: "/careers" },
+                { label: t('landing.footer.links.press'), to: "/press" },
+                { label: t('landing.footer.links.contact'), to: "/contact" },
+              ],
             },
             {
-              title: "Resources",
-              links: ["Blog", "Legal Insights", "Case Studies", "Help Center"],
+              title: t('landing.footer.sections.resources'),
+              links: [
+                { label: t('landing.footer.links.blog'), to: "/blog" },
+                { label: t('landing.footer.links.insights'), to: "/insights" },
+                { label: t('landing.footer.links.studies'), to: "/studies" },
+                { label: t('landing.footer.links.help'), to: "/help" },
+              ],
             },
           ].map((section, index) => (
             <motion.div
@@ -105,10 +116,10 @@ const Footer: React.FC = () => {
                 {section.links.map((link, i) => (
                   <li key={i}>
                     <Link
-                      to="/"
+                      to={link.to}
                       className="text-sm text-gray-600 transition-colors hover:text-primary"
                     >
-                      {link}
+                      {link.label}
                     </Link>
                   </li>
                 ))}
@@ -125,10 +136,10 @@ const Footer: React.FC = () => {
           className="pt-6 mt-10 text-center text-gray-600 border-t border-gray-200"
         >
           <p className="text-xs sm:text-sm">
-            © {new Date().getFullYear()} LegalEase. All rights reserved.
+            © {new Date().getFullYear()} {t('landing.footer.rights')}
           </p>
           <p className="mt-1 text-xs sm:text-sm">
-            Made with <span className="text-red-500">❤️</span> by Team
+            {t('landing.footer.made_with')} <span className="text-red-500">❤️</span> by Team
             RobinHood
           </p>
         </motion.div>

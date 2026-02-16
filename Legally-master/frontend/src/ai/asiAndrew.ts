@@ -341,7 +341,7 @@ Your response must be a helpful legal consultation answer.`;
   /**
    * Generate fallback response when ASI fails
    */
-  private generateFallbackResponse(davidResult: ASIDavidResult): string {
+  private generateFallbackResponse(davidResult: ASIDavidResult, userQuery: string, lawyerCards: LawyerCard[]): string {
     const { queryContext, recommendations } = davidResult;
 
     let response = `## Hello! I've analyzed your legal query\n\n`;

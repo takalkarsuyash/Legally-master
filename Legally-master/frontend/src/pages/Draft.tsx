@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FileText, Loader, AlertCircle, ExternalLink, Trash2 } from 'lucide-react';
@@ -40,6 +41,7 @@ const getPlaceholderForDocumentType = (documentType: DocumentType | undefined): 
 };
 
 const LegalDocumentGenerator: React.FC = () => {
+  const { t } = useTranslation();
   // Main content states
   const [generatedContent, setGeneratedContent] = useState<string>('');
   const [isStreaming, setIsStreaming] = useState<boolean>(false);
@@ -269,17 +271,17 @@ const LegalDocumentGenerator: React.FC = () => {
               whileHover={{ scale: 1.05 }}
             >
               <FileText className="mr-2 w-4 h-4 text-primary" />
-              <span className="font-medium text-primary">AI-Powered Legal Drafting</span>
+              <span className="font-medium text-primary">{t('draft.header.badge')}</span>
             </motion.div>
             <h1 className="mb-2 text-3xl font-bold tracking-tight sm:mb-4 sm:text-5xl lg:text-6xl">
-              <span className="text-gray-900">Legal Document</span>
+              <span className="text-gray-900">{t('draft.header.title').split(' ')[0]}</span>
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary-dark to-secondary">
-                Generator
+                {t('draft.header.title').split(' ').slice(1).join(' ')}
               </span>
             </h1>
             <p className="px-4 mx-auto max-w-2xl text-base leading-relaxed text-gray-600 sm:text-lg">
-              Create professional legal documents with AI assistance, tailored for Indian law.
+              {t('draft.header.subtitle')}
             </p>
           </div>
 
@@ -289,7 +291,7 @@ const LegalDocumentGenerator: React.FC = () => {
               className="flex items-center px-5 py-2.5 rounded-xl bg-white/50 backdrop-blur-md border border-white/60 shadow-lg transition-all cursor-pointer hover:shadow-xl"
               whileHover={{ scale: 1.02 }}
             >
-              <span className="mr-3 text-sm font-medium text-gray-700">Streaming Mode</span>
+              <span className="mr-3 text-sm font-medium text-gray-700">{t('draft.toggles.streaming')}</span>
               <input
                 type="checkbox"
                 checked={useStreaming}
@@ -301,7 +303,7 @@ const LegalDocumentGenerator: React.FC = () => {
               className="flex items-center px-5 py-2.5 rounded-xl bg-green-50/70 backdrop-blur-md border border-green-200/60 shadow-lg transition-all cursor-pointer hover:shadow-xl"
               whileHover={{ scale: 1.02 }}
             >
-              <span className="mr-3 text-sm font-medium text-green-800">Use Template Data</span>
+              <span className="mr-3 text-sm font-medium text-green-800">{t('draft.toggles.template')}</span>
               <input
                 type="checkbox"
                 checked={useTemplateData}
@@ -324,7 +326,7 @@ const LegalDocumentGenerator: React.FC = () => {
               <div className="p-2 rounded-xl bg-gradient-to-br from-primary to-primary-dark">
                 <FileText className="w-5 h-5 text-white sm:w-6 sm:h-6" />
               </div>
-              <span>Document Details</span>
+              <span>{t('draft.form.title')}</span>
             </h2>
 
             {apiError && (
@@ -336,13 +338,13 @@ const LegalDocumentGenerator: React.FC = () => {
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 sm:space-y-5">
               {/* Form Fields */}
               <div>
-                <label htmlFor="documentType" className="block mb-1.5 text-sm font-bold text-gray-800">Document Type</label>
+                <label htmlFor="documentType" className="block mb-1.5 text-sm font-bold text-gray-800">{t('draft.form.doc_type')}</label>
                 <select
                   id="documentType"
                   {...register("documentType", { required: "Document type is required" })}
                   className="block w-full px-4 py-2.5 text-base bg-white/70 rounded-xl border border-gray-300 shadow-sm focus:ring-2 focus:ring-primary-dark focus:border-primary-dark transition"
                 >
-                  <option value="">Select Document Type</option>
+                  <option value="">{t('draft.form.doc_type_placeholder')}</option>
                   {Object.keys(INDIAN_LEGAL_REFERENCES).map(type => (
                     <option key={type} value={type}>{type}</option>
                   ))}
@@ -352,7 +354,7 @@ const LegalDocumentGenerator: React.FC = () => {
               </div>
 
               <div>
-                <label htmlFor="partyA" className="block mb-1.5 text-sm font-bold text-gray-800">Party A (First Party)</label>
+                <label htmlFor="partyA" className="block mb-1.5 text-sm font-bold text-gray-800">{t('draft.form.party_a')}</label>
                 <input
                   type="text"
                   id="partyA"
@@ -363,7 +365,7 @@ const LegalDocumentGenerator: React.FC = () => {
               </div>
 
               <div>
-                <label htmlFor="partyB" className="block mb-1.5 text-sm font-bold text-gray-800">Party B (Second Party)</label>
+                <label htmlFor="partyB" className="block mb-1.5 text-sm font-bold text-gray-800">{t('draft.form.party_b')}</label>
                 <input
                   type="text"
                   id="partyB"
@@ -374,11 +376,11 @@ const LegalDocumentGenerator: React.FC = () => {
               </div>
 
               <div>
-                <label htmlFor="additionalDetails" className="block mb-1.5 text-sm font-bold text-gray-800">Additional Details</label>
+                <label htmlFor="additionalDetails" className="block mb-1.5 text-sm font-bold text-gray-800">{t('draft.form.additional_details')}</label>
                 <textarea
                   id="additionalDetails"
                   {...register("additionalDetails", { required: "Additional details are required" })}
-                  placeholder="Enter any additional terms, conditions, or context..."
+                  placeholder={t('draft.form.additional_details_placeholder')}
                   className="block w-full px-4 py-2.5 text-base bg-white/70 rounded-xl border border-gray-300 shadow-sm focus:ring-2 focus:ring-primary-dark focus:border-primary-dark min-h-[100px] transition resize-none"
                 />
                 {errors.additionalDetails && <p className="mt-1.5 text-sm font-medium text-red-600">{errors.additionalDetails.message}</p>}
@@ -386,12 +388,12 @@ const LegalDocumentGenerator: React.FC = () => {
 
               <div>
                 <label htmlFor="specificDetails" className="block mb-1.5 text-sm font-bold text-gray-800">
-                  {selectedDocumentType ? `Specific Details for ${selectedDocumentType}` : 'Specific Details'}
+                  {selectedDocumentType ? `${t('draft.form.specific_details')} for ${selectedDocumentType}` : t('draft.form.specific_details')}
                 </label>
                 <textarea
                   id="specificDetails"
                   {...register("specificDetails", { required: "Specific details are required" })}
-                  placeholder={getPlaceholderForDocumentType(selectedDocumentType as DocumentType)}
+                  placeholder={selectedDocumentType ? getPlaceholderForDocumentType(selectedDocumentType as DocumentType) : t('draft.form.specific_details_placeholder')}
                   className="block w-full px-4 py-2.5 text-base bg-white/70 rounded-xl border border-gray-300 shadow-sm focus:ring-2 focus:ring-primary-dark focus:border-primary-dark min-h-[100px] transition resize-none"
                 />
                 {errors.specificDetails && <p className="mt-1.5 text-sm font-medium text-red-600">{errors.specificDetails.message}</p>}
@@ -399,13 +401,13 @@ const LegalDocumentGenerator: React.FC = () => {
 
               {selectedDocumentType && selectedDocumentType !== 'Other' && (
                 <div>
-                  <label htmlFor="state" className="block mb-1.5 text-sm font-bold text-gray-800">State/UT of Jurisdiction</label>
+                  <label htmlFor="state" className="block mb-1.5 text-sm font-bold text-gray-800">{t('draft.form.state')}</label>
                   <select
                     id="state"
                     {...register("state")}
                     className="block w-full px-4 py-2.5 text-base bg-white/70 rounded-xl border border-gray-300 shadow-sm focus:ring-2 focus:ring-primary-dark focus:border-primary-dark transition"
                   >
-                    <option value="">Select State/UT</option>
+                    <option value="">{t('draft.form.state_placeholder')}</option>
                     {INDIAN_STATES.map(state => <option key={state} value={state}>{state}</option>)}
                   </select>
                 </div>
@@ -419,7 +421,7 @@ const LegalDocumentGenerator: React.FC = () => {
                 disabled={isGenerating}
               >
                 {isGenerating ? <Loader className="mr-3 w-5 h-5 animate-spin" /> : <FileText className="mr-3 w-5 h-5" />}
-                {isGenerating ? (isStreaming ? 'Generating...' : 'Processing...') : 'Generate Document'}
+                {isGenerating ? (isStreaming ? t('draft.form.generating') : t('draft.form.processing')) : t('draft.form.generate_btn')}
               </motion.button>
             </form>
 
@@ -447,7 +449,7 @@ const LegalDocumentGenerator: React.FC = () => {
               <div className="p-2 rounded-xl bg-gradient-to-br from-secondary to-primary">
                 <FileText className="w-5 h-5 text-white sm:w-6 sm:h-6" />
               </div>
-              <span>Generated Document</span>
+              <span>{t('draft.preview.title')}</span>
             </h2>
 
             <div className="flex flex-col flex-1 min-h-0">
@@ -494,8 +496,8 @@ const LegalDocumentGenerator: React.FC = () => {
                   >
                     <FileText className="w-10 h-10 text-primary" />
                   </motion.div>
-                  <h3 className="text-xl font-bold text-gray-900">Ready to Generate</h3>
-                  <p className="mt-2 text-base text-gray-600">Fill out the form and your document will appear here.</p>
+                  <h3 className="text-xl font-bold text-gray-900">{t('draft.preview.empty_title')}</h3>
+                  <p className="mt-2 text-base text-gray-600">{t('draft.preview.empty_desc')}</p>
                 </div>
               )}
             </div>
@@ -508,7 +510,7 @@ const LegalDocumentGenerator: React.FC = () => {
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }}
             className="mt-12 sm:mt-16"
           >
-            <h2 className="mb-8 text-2xl font-bold text-center text-gray-900">Your Document History</h2>
+            <h2 className="mb-8 text-2xl font-bold text-center text-gray-900">{t('draft.history.title')}</h2>
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {userDocs.map((doc) => (
                 <motion.div
@@ -533,7 +535,7 @@ const LegalDocumentGenerator: React.FC = () => {
                       className="flex-1 flex justify-center items-center px-4 py-2 space-x-2 text-sm text-white bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg shadow hover:shadow-md transition"
                     >
                       <ExternalLink className="w-4 h-4" />
-                      <span>View / Edit</span>
+                      <span>{t('draft.history.view')}</span>
                     </motion.button>
                     <motion.button
                       whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}

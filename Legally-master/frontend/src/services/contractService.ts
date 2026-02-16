@@ -3,7 +3,7 @@ import { ethers } from "ethers";
 
 // Contract configuration
 // You can set this via environment variable VITE_CONTRACT_ADDRESS or update directly here
-  // IMPORTANT: You need to deploy your contract and set the correct address here
+// IMPORTANT: You need to deploy your contract and set the correct address here
 const CONTRACT_ADDRESS = import.meta.env.VITE_CONTRACT_ADDRESS || "0x0000000000000000000000000000000000000000";
 
 // Helper function to get properly checksummed address
@@ -37,13 +37,13 @@ export class ContractService {
   constructor() {
     if (typeof window !== 'undefined' && window.ethereum) {
       this.provider = new ethers.BrowserProvider(window.ethereum);
-      
+
       // Validate contract address
       if (CONTRACT_ADDRESS === "0x0000000000000000000000000000000000000000") {
         console.warn("Contract address not set. Please deploy your contract and update CONTRACT_ADDRESS.");
         return;
       }
-      
+
       try {
         // Ensure address is properly checksummed
         const checksummedAddress = getChecksummedAddress(CONTRACT_ADDRESS);
@@ -80,14 +80,14 @@ export class ContractService {
     try {
       if (typeof window !== 'undefined' && window.ethereum) {
         this.provider = new ethers.BrowserProvider(window.ethereum);
-        
+
         const checksummedAddress = getChecksummedAddress(CONTRACT_ADDRESS);
         console.log('Attempting to initialize contract with address:', checksummedAddress);
-        
+
         if (checksummedAddress !== "0x0000000000000000000000000000000000000000") {
           this.contract = new ethers.Contract(checksummedAddress, CONTRACT_ABI, this.provider);
           console.log('Contract service reinitialized with address:', checksummedAddress);
-          
+
           // Test if contract is actually deployed by trying to read a simple function
           try {
             await this.contract.maxTokens();
@@ -115,9 +115,9 @@ export class ContractService {
     const hasWindow = typeof window !== 'undefined';
     const hasEthereum = hasWindow && !!window.ethereum;
     const hasContract = !!this.contract;
-    
+
     console.log('Web3 availability check:', { hasWindow, hasEthereum, hasContract });
-    
+
     return hasWindow && hasEthereum && hasContract;
   }
 
@@ -159,7 +159,7 @@ export class ContractService {
       // Estimate gas for the transaction
       let gasEstimate;
       try {
-        gasEstimate = await contract.buy.estimateGas(tokenCount, { value: requiredAmount });
+        gasEstimate = await (contract as any).buy.estimateGas(tokenCount, { value: requiredAmount });
         console.log(`Gas estimate: ${gasEstimate.toString()}`);
       } catch (gasError) {
         console.warn("Gas estimation failed:", gasError);
@@ -168,7 +168,7 @@ export class ContractService {
 
       // Call the buy function with signer
       const contractWithSigner = contract.connect(signer);
-      const tx = await contractWithSigner.buy(tokenCount, { 
+      const tx = await (contractWithSigner as any).buy(tokenCount, {
         value: requiredAmount,
         gasLimit: gasEstimate ? gasEstimate * 120n / 100n : undefined // Add 20% buffer
       });
@@ -185,10 +185,10 @@ export class ContractService {
       };
     } catch (error: any) {
       console.error("Purchase failed:", error);
-      
+
       // Parse common error messages
       let errorMessage = error.message || "Transaction failed. Please try again.";
-      
+
       if (error.code === 'ACTION_REJECTED') {
         errorMessage = "Transaction was rejected by user";
       } else if (error.code === 'INSUFFICIENT_FUNDS') {
@@ -198,7 +198,7 @@ export class ContractService {
       } else if (error.message?.includes('revert')) {
         errorMessage = "Transaction reverted. Please check your token count and try again.";
       }
-      
+
       return {
         success: false,
         error: errorMessage,
@@ -310,7 +310,7 @@ export class ContractService {
       const tokenPrice = await this.getTokenPrice();
       const required = tokenCount * tokenPrice;
       const balance = parseFloat(await this.getUserBalance(userAddress));
-      
+
       return {
         canAfford: balance >= required,
         required: required.toString(),

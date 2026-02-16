@@ -1,4 +1,5 @@
 import { useState, useRef, ChangeEvent, FormEvent, FC, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
     Paperclip,
     X,
@@ -50,6 +51,7 @@ interface FileInfo {
 }
 
 const DocumentQuery: FC = () => {
+    const { t } = useTranslation();
     const [messages, setMessages] = useState<Message[]>([]);
     const [inputValue, setInputValue] = useState<string>('');
     const [file, setFile] = useState<FileType | null>(null);
@@ -303,7 +305,7 @@ const DocumentQuery: FC = () => {
             // Stream David's ASI analysis
             setAgentProgress({
                 stage: 'david',
-                message: 'ASI David is analyzing your legal question using ASI models...',
+                message: t('document_query.progress.david_analyzing_asi'),
                 progress: 0,
                 toolCalls: []
             });
@@ -334,7 +336,7 @@ const DocumentQuery: FC = () => {
                         // Start showing "Andrew" stage UI
                         setAgentProgress({
                             stage: 'andrew',
-                            message: 'ASI Andrew is formatting your response using ASI models...',
+                            message: t('document_query.progress.andrew_formatting_asi'),
                             progress: 50,
                             toolCalls: []
                         });
@@ -379,7 +381,7 @@ const DocumentQuery: FC = () => {
                      setMessages(prev => [...prev, {
                         id: generateId(),
                         type: 'bot',
-                        content: 'I apologize, but I encountered an error processing your request with the ASI agents.',
+                        content: t('document_query.chat.error_generic'),
                         timestamp: Date.now()
                     }]);
                 }
@@ -390,7 +392,7 @@ const DocumentQuery: FC = () => {
                 const errorMessage: Message = {
                     id: generateId(),
                     type: 'bot',
-                    content: 'I apologize, but I encountered technical difficulties with the ASI agents. Please try again in a moment.',
+                    content: t('document_query.chat.error_tech'),
                     timestamp: Date.now()
                 };
                 setMessages(prevMessages => [...prevMessages, errorMessage]);
@@ -407,7 +409,7 @@ const DocumentQuery: FC = () => {
             // Stream David's analysis
             setAgentProgress({
                 stage: 'david',
-                message: 'David is analyzing your legal question using pattern matching...',
+                message: t('document_query.progress.david_analyzing_gemini'),
                 progress: 0,
                 toolCalls: []
             });
@@ -437,7 +439,7 @@ const DocumentQuery: FC = () => {
             // Stream Andrew's presentation
             setAgentProgress({
                 stage: 'andrew',
-                message: 'Andrew is formatting your response using pattern insights...',
+                message: t('document_query.progress.andrew_formatting_gemini'),
                 progress: 0,
                 toolCalls: []
             });
@@ -502,7 +504,7 @@ const DocumentQuery: FC = () => {
                 const errorMessage: Message = {
                     id: generateId(),
                     type: 'bot',
-                    content: 'I apologize, but I encountered technical difficulties processing your request. Please try again in a moment.',
+                    content: t('document_query.chat.error_tech'),
                     timestamp: Date.now()
                 };
                 setMessages(prevMessages => [...prevMessages, errorMessage]);
@@ -564,7 +566,7 @@ const DocumentQuery: FC = () => {
                             <h3 className="font-bold text-lg text-gray-900">{lawyer.name}</h3>
                             {isPrimary && (
                                 <span className="px-2 py-1 text-xs font-semibold bg-primary text-white rounded-full">
-                                    Recommended
+                                    {t('document_query.lawyer_card.recommended')}
                                 </span>
                             )}
                         </div>
@@ -594,7 +596,7 @@ const DocumentQuery: FC = () => {
 
                         <div className="flex items-center justify-between">
                             <div className="text-sm text-gray-500">
-                                <span className="font-medium">Match: {matchScore}%</span>
+                                <span className="font-medium">{t('document_query.lawyer_card.match')} {matchScore}%</span>
                             </div>
                             <div className="text-sm font-medium text-primary">
                                 {lawyer.website ? (
@@ -602,13 +604,13 @@ const DocumentQuery: FC = () => {
                                         <Globe className="w-4 h-4" /> {lawyer.website}
                                     </a>
                                 ) : (
-                                    <span className="text-gray-400 text-xs">Website not available</span>
+                                    <span className="text-gray-400 text-xs">{t('document_query.lawyer_card.website_na')}</span>
                                 )}
                             </div>
                         </div>
 
                         <div className="mt-2 text-xs text-gray-500">
-                            <strong>Why recommended:</strong> {whyRecommended}
+                            <strong>{t('document_query.lawyer_card.why_recommended')}</strong> {whyRecommended}
                         </div>
 
                         {lawyer.achievements.length > 0 && (
@@ -665,7 +667,7 @@ const DocumentQuery: FC = () => {
                             whileHover={{ scale: 1.05 }}
                         >
                             <Brain className="w-4 h-4 mr-2 text-primary" />
-                            <span className="text-primary font-medium">A2A Protocol Service</span>
+                            <span className="text-primary font-medium">{t('document_query.header.service_name')}</span>
                             <Zap className="w-4 h-4 ml-2 text-secondary" />
                         </motion.div>
                         <h1 className="mb-2 text-2xl font-bold tracking-wide sm:mb-4 sm:text-4xl lg:text-6xl">
@@ -682,7 +684,7 @@ const DocumentQuery: FC = () => {
                             </span>
                             <br />
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary-dark to-secondary">
-                                Assistant Chatbot
+                                {t('document_query.header.title_sub')}
                             </span>
                         </h1>
 
@@ -701,7 +703,7 @@ const DocumentQuery: FC = () => {
                                         : 'text-gray-600 hover:text-primary'
                                         }`}
                                 >
-                                    ASI Models
+                                    {t('document_query.header.asi_models')}
                                 </motion.button>
                                 <motion.button
                                     whileHover={{ scale: 1.05 }}
@@ -712,12 +714,12 @@ const DocumentQuery: FC = () => {
                                         : 'text-gray-600 hover:text-secondary'
                                         }`}
                                 >
-                                    Gemini Models
+                                    {t('document_query.header.gemini_models')}
                                 </motion.button>
                             </motion.div>
                         </div>
                         <p className="px-4 mx-auto max-w-2xl text-base leading-relaxed text-gray-600 sm:text-xl">
-                            Ask any legal question and get precise answers using ASI models
+                            {t('document_query.header.subtitle')}
                         </p>
                     </div>
                 </motion.div>
@@ -756,27 +758,26 @@ const DocumentQuery: FC = () => {
                                         <div className="flex justify-center items-center mr-3 w-10 h-10 bg-gradient-to-br rounded-full from-primary/20 to-secondary/20">
                                             <Brain className="w-5 h-5 text-primary" />
                                         </div>
-                                        <h3 className="text-xl font-bold text-gray-900">A2A Protocol</h3>
+                                        <h3 className="text-xl font-bold text-gray-900">{t('document_query.modal.title')}</h3>
                                     </div>
-
                                     <div className="space-y-3 text-gray-700">
                                         <p className="leading-relaxed">
-                                            <strong>Agent-to-Agent communication protocol</strong> where David & Andrew pass context and analysis to each other.
+                                            <strong>{t('document_query.modal.description')}</strong>
                                         </p>
-                                        <p className="text-sm leading-relaxed text-gray-600">
+                                        <div className="text-sm leading-relaxed text-gray-600">
                                             {useASI ? (
-                                                <>This results in highest benchmarks using <strong>ASI models</strong> with intelligent model selection for superior legal recommendations.</>
+                                                 <p>{t('document_query.modal.asi_benefit')}</p>
                                             ) : (
-                                                <>This results in highest benchmarks of results and best-in-class reinforcement learning for superior legal recommendations.</>
+                                                 <p>{t('document_query.modal.gemini_benefit')}</p>
                                             )}
-                                        </p>
+                                        </div>
                                         {useASI && (
                                             <div className="p-3 bg-primary/10 rounded-lg text-xs">
-                                                <strong>ASI Model Capabilities:</strong>
-                                                <br />• asi1-mini: 128K tokens, 85% accuracy, general purpose
-                                                <br />• asi1-fast: 64K tokens, 87% accuracy, ultra-low latency
-                                                <br />• asi1-extended: 64K tokens, 89% accuracy, deep reasoning
-                                                <br />• asi1-agentic: 64K tokens, 85% accuracy, agent orchestration
+                                                <strong>{t('document_query.modal.capabilities_title')}</strong>
+                                                <br />• asi1-mini: 128K tokens, 85% accuracy
+                                                <br />• asi1-fast: 64K tokens, 87% accuracy
+                                                <br />• asi1-extended: 64K tokens, 89% accuracy
+                                                <br />• asi1-agentic: 64K tokens, 85% accuracy
                                             </div>
                                         )}
                                     </div>
@@ -787,8 +788,8 @@ const DocumentQuery: FC = () => {
                                             <div className="flex justify-center items-center mb-2 w-12 h-12 bg-gradient-to-br rounded-full from-primary to-primary-dark">
                                                 <Database className="w-6 h-6 text-white" />
                                             </div>
-                                            <span className="text-sm font-semibold text-primary">David</span>
-                                            <span className="text-xs text-gray-600">Pattern Matching</span>
+                                            <span className="text-sm font-semibold text-primary">{t('document_query.modal.roles.david')}</span>
+                                            <span className="text-xs text-gray-600">{t('document_query.modal.roles.david_desc')}</span>
                                         </div>
 
                                         <ArrowRight className="w-5 h-5 text-gray-400" />
@@ -797,8 +798,8 @@ const DocumentQuery: FC = () => {
                                             <div className="flex justify-center items-center mb-2 w-12 h-12 bg-gradient-to-br rounded-full from-secondary to-secondary-dark">
                                                 <MdPsychology className="w-6 h-6 text-white" />
                                             </div>
-                                            <span className="text-sm font-semibold text-secondary">Andrew</span>
-                                            <span className="text-xs text-gray-600">Presentation</span>
+                                            <span className="text-sm font-semibold text-secondary">{t('document_query.modal.roles.andrew')}</span>
+                                            <span className="text-xs text-gray-600">{t('document_query.modal.roles.andrew_desc')}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -852,9 +853,9 @@ const DocumentQuery: FC = () => {
                                     >
                                         <Brain className="w-8 h-8 sm:w-12 sm:h-12 text-primary" />
                                     </motion.div>
-                                    <h3 className="mb-2 sm:mb-3 text-lg sm:text-2xl font-bold text-gray-900">Ask Your Legal Question</h3>
+                                    <h3 className="mb-2 sm:mb-3 text-lg sm:text-2xl font-bold text-gray-900">{t('document_query.empty_state.title')}</h3>
                                     <p className="mb-4 sm:mb-6 text-sm sm:text-base leading-relaxed text-gray-600 px-4">
-                                        Ask any legal question and our AI agents will provide expert legal analysis and guidance.
+                                        {t('document_query.empty_state.description')}
                                     </p>
                                     <div className="flex flex-col sm:flex-row gap-3">
                                         <motion.button
@@ -864,7 +865,7 @@ const DocumentQuery: FC = () => {
                                             className="inline-flex items-center px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base text-primary rounded-lg shadow-md transition-colors bg-primary/10 hover:bg-primary/20 border border-primary/30"
                                         >
                                             <Paperclip className="mr-2 w-4 h-4 sm:w-5 sm:h-5" />
-                                            Upload Document (Optional)
+                                            {t('document_query.empty_state.upload_btn')}
                                         </motion.button>
                                         <motion.button
                                             whileHover={{ scale: 1.02 }}
@@ -878,7 +879,7 @@ const DocumentQuery: FC = () => {
                                             className="inline-flex items-center px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base text-white rounded-lg shadow-md transition-colors bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary"
                                         >
                                             <Sparkles className="mr-2 w-4 h-4 sm:w-5 sm:h-5" />
-                                            Start Chatting
+                                            {t('document_query.empty_state.start_btn')}
                                         </motion.button>
                                     </div>
                                 </div>
@@ -1055,7 +1056,7 @@ const DocumentQuery: FC = () => {
                                         value={inputValue}
                                         onChange={(e) => setInputValue(e.target.value)}
                                         onFocus={() => setIsChatMode(true)}
-                                        placeholder="Ask any legal question... (e.g., 'I need help with a contract dispute')"
+                                        placeholder={t('document_query.chat.placeholder')}
                                         disabled={isProcessingFile || isProcessingMessage}
                                         className="flex-1 px-3 py-2 sm:px-4 sm:py-3 text-sm sm:text-base rounded-xl border border-white/40 bg-white/60 backdrop-blur-sm focus:ring-2 focus:ring-primary focus:border-primary transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
                                     />

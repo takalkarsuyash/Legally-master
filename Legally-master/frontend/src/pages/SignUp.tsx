@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
@@ -14,6 +15,7 @@ const SignUp: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -64,10 +66,10 @@ const SignUp: React.FC = () => {
              <UserPlus className="h-6 w-6 text-primary" />
           </div>
           <h2 className="mt-2 text-3xl font-extrabold text-gray-900">
-            Create an account
+            {t('auth.signup.title')}
           </h2>
           <p className="mt-2 text-sm text-gray-600">
-            Join LegalEase to start drafting smarter
+            {t('auth.signup.subtitle')}
           </p>
         </div>
 
@@ -82,7 +84,7 @@ const SignUp: React.FC = () => {
                         type="text"
                         required
                         className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
-                        placeholder="First Name"
+                        placeholder={t('auth.signup.first_name')}
                         value={firstName}
                         onChange={(e) => setFirstName(e.target.value)}
                     />
@@ -95,7 +97,7 @@ const SignUp: React.FC = () => {
                         type="text"
                         required
                         className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
-                        placeholder="Last Name"
+                        placeholder={t('auth.signup.last_name')}
                         value={lastName}
                         onChange={(e) => setLastName(e.target.value)}
                     />
@@ -111,10 +113,10 @@ const SignUp: React.FC = () => {
                 value={gender}
                 onChange={(e) => setGender(e.target.value)}
               >
-                <option value="" disabled>Select Gender</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other / Prefer not to say</option>
+                <option value="" disabled>{t('auth.signup.select_gender')}</option>
+                <option value="male">{t('auth.signup.male')}</option>
+                <option value="female">{t('auth.signup.female')}</option>
+                <option value="other">{t('auth.signup.other')}</option>
               </select>
             </div>
             <div>
@@ -126,7 +128,7 @@ const SignUp: React.FC = () => {
                 autoComplete="email"
                 required
                 className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
-                placeholder="Email address"
+                placeholder={t('auth.signin.email_label')}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -140,7 +142,7 @@ const SignUp: React.FC = () => {
                 autoComplete="current-password"
                 required
                 className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
-                placeholder="Password"
+                placeholder={t('auth.signin.password_label')}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -153,15 +155,15 @@ const SignUp: React.FC = () => {
               disabled={loading}
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 transition-colors"
             >
-              {loading ? 'Creating account...' : 'Sign Up'}
+              {loading ? t('auth.signup.submitting') : t('auth.signup.submit')}
             </button>
           </div>
         </form>
         
         <div className="text-center text-sm">
-            <span className="text-gray-500">Already have an account? </span>
+            <span className="text-gray-500">{t('auth.signup.already_have_account')} </span>
             <Link to="/login" className="font-medium text-primary hover:text-primary-dark">
-                Sign In
+                {t('auth.signup.signin_link')}
             </Link>
         </div>
       </div>

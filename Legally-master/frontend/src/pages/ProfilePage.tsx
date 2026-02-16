@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { User } from '@supabase/supabase-js';
@@ -139,6 +140,7 @@ interface UserProfile {
 }
 
 const ProfilePage: React.FC = () => {
+  const { t } = useTranslation();
   const { user: authUser, loading: authLoading } = useAuth();
   const { walletAddress, userProfile: walletProfile, userTokens, loading: walletLoading, connectWallet, disconnectWallet, setShowWalletModal, refreshUserData } = useWallet();
 
@@ -283,7 +285,7 @@ const ProfilePage: React.FC = () => {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading your profile...</p>
+          <p className="mt-4 text-gray-600">{t('profile.loading')}</p>
         </div>
       </div>
     );
@@ -329,19 +331,19 @@ const ProfilePage: React.FC = () => {
                     
                     {/* Upload Overlay */}
                     <label className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer text-white text-xs font-medium">
-                        Change
+                        {t('profile.change_photo')}
                         <input type="file" className="hidden" accept="image/*" onChange={(e) => {
                              const file = e.target.files?.[0];
                              if (file) alert("Image upload coming soon!");
                         }} />
                     </label>
                   </div>
-                  <h1 className="text-2xl font-bold text-gray-800">Profile</h1>
+                  <h1 className="text-2xl font-bold text-gray-800">{t('profile.title')}</h1>
                 </div>
 
                   <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">First name</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">{t('profile.first_name')}</label>
                     <div className="relative">
                         <input 
                             value={name} 
@@ -362,7 +364,7 @@ const ProfilePage: React.FC = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Last name</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">{t('profile.last_name')}</label>
                     <div className="relative">
                         <input 
                             value={surname} 
@@ -393,11 +395,11 @@ const ProfilePage: React.FC = () => {
               <div className="mt-6 flex gap-3">
                 {isEditing && (
                     <button onClick={handleSave} disabled={saving} className="flex-1 px-4 py-2 bg-[#C89B00] text-white rounded-lg hover:bg-[#9C7F00] transition-colors shadow-sm">
-                        {saving ? 'Saving...' : 'Save Changes'}
+                        {saving ? t('profile.saving') : t('profile.save')}
                     </button>
                 )}
                 <button onClick={handleSignOut} className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-gray-700 font-medium bg-white">
-                    {walletAddress ? 'Disconnect' : 'Sign Out'}
+                    {walletAddress ? t('profile.disconnect') : t('profile.sign_out')}
                 </button>
               </div>
             </div>

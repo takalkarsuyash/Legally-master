@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
@@ -11,6 +12,7 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState('');
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (user) {
@@ -69,10 +71,10 @@ const Login: React.FC = () => {
              <Lock className="h-6 w-6 text-primary" />
           </div>
           <h2 className="mt-2 text-3xl font-extrabold text-gray-900">
-            Sign in to your account
+            {t('auth.signin.title')}
           </h2>
           <p className="mt-2 text-sm text-gray-600">
-            Access LegalEase's AI-powered features
+            {t('auth.signin.subtitle')}
           </p>
         </div>
         <div className="mt-8 space-y-6">
@@ -87,7 +89,7 @@ const Login: React.FC = () => {
                   autoComplete="email"
                   required
                   className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
-                  placeholder="Email address"
+                  placeholder={t('auth.signin.email_label')}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   disabled={loading}
@@ -102,7 +104,7 @@ const Login: React.FC = () => {
                   autoComplete="current-password"
                   required
                   className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
-                  placeholder="Password"
+                  placeholder={t('auth.signin.password_label')}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   disabled={loading}
@@ -116,7 +118,7 @@ const Login: React.FC = () => {
                 disabled={loading}
                 className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 transition-colors"
               >
-                {loading ? 'Signing in...' : 'Sign in'}
+                {loading ? t('auth.signin.submitting') : t('auth.signin.submit')}
               </button>
             </div>
           </form>
@@ -126,7 +128,7 @@ const Login: React.FC = () => {
               <div className="w-full border-t border-gray-300" />
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-gray-500">Or continue with</span>
+              <span className="px-2 bg-white text-gray-500">{t('auth.signin.or_continue')}</span>
             </div>
           </div>
 
@@ -135,15 +137,17 @@ const Login: React.FC = () => {
           </div>
           <div className="text-center mt-4 space-y-2">
             <p className="text-sm text-gray-600">
-                Don't have an account?{' '}
+                {t('auth.signin.no_account')}{' '}
                 <Link to="/signup" className="font-medium text-primary hover:text-primary-dark">
-                    Sign Up
+                    {t('auth.signin.signup_link')}
                 </Link>
             </p>
           </div>
           <div className="text-center text-xs text-gray-500 mt-4">
-            By signing in, you agree to our Terms of Service and Privacy Policy.
+          <div className="text-center text-xs text-gray-500 mt-4">
+            {t('auth.signin.terms')}
           </div>
+        </div>
         </div>
       </div>
     </div>

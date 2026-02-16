@@ -8,7 +8,9 @@ import Summarisation from "./pages/Summarisation";
 import DocumentQuery from "./pages/DocumentQuery";
 import Draft from "./pages/Draft";
 import PropertyTax from "./pages/PropertyTax";
-import ChatSection from "./components/Chatbot";
+import LanguageToggle from "./components/LanguageToggle";
+// import ChatSection from "./components/Chatbot";
+
 import FindLawyer from "./pages/FindLawyer";
 import ProfilePage from "./pages/ProfilePage";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -96,7 +98,9 @@ const AppContent: React.FC = () => {
           />
         </Routes>
       </div>
-      <ChatSection />
+
+      {/* <ChatSection /> */}
+      <LanguageToggle />
       <Analytics />
     </div>
   );

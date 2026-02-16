@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { motion, Variants } from "framer-motion";
 import {
   Shield,
@@ -24,7 +25,8 @@ const heroFadeInUp: Variants = {
 };
 
 const HeroSection: React.FC = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (
     <section className="overflow-hidden relative pb-8 w-full bg-gradient-to-br from-gray-50 to-white sm:pb-10">
@@ -52,7 +54,7 @@ const HeroSection: React.FC = () => {
                   animate="visible"
                   className="mb-4 text-2xl font-bold leading-tight sm:text-3xl md:text-4xl lg:text-5xl"
                 >
-                  <span className="block">The Future of</span>
+                  <span className="block">{t('landing.hero_title')}</span>
                   <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary underline decoration-wavy decoration-primary underline-offset-4 sm:underline-offset-6 lg:underline-offset-8">
                     Legal Practice
                   </span>
@@ -66,7 +68,7 @@ const HeroSection: React.FC = () => {
                   transition={{ delay: 0.3 }}
                   className="mx-auto mb-6 text-sm leading-relaxed text-gray-600 sm:text-base md:text-lg lg:mx-0"
                 >
-                  Experience cutting-edge AI technology that transforms how legal professionals work, collaborate, and deliver superior results.
+                  {t('landing.hero_subtitle')}
                 </motion.p>
 
                 <motion.div
@@ -84,7 +86,7 @@ const HeroSection: React.FC = () => {
                     className="flex gap-2 justify-center items-center px-3 py-2 text-xs font-semibold text-white bg-gradient-to-r rounded-lg shadow-lg transition-all from-primary to-primary-dark hover:shadow-xl sm:px-4 sm:py-2.5 sm:text-sm"
                   >
                     <Brain className="w-3 h-3 sm:w-4 sm:h-4" />
-                    <span>Search Query</span>
+                    <span>{t('landing.hero_features.search')}</span>
                     <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4" />
                   </motion.button>
 
@@ -96,7 +98,7 @@ const HeroSection: React.FC = () => {
                     className="flex gap-2 justify-center items-center px-3 py-2 text-xs font-semibold rounded-lg border-2 transition-all text-primary border-primary hover:bg-primary hover:text-white sm:px-4 sm:py-2.5 sm:text-sm"
                   >
                     <Database className="w-3 h-3 sm:w-4 sm:h-4" />
-                    <span>Draft Document</span>
+                    <span>{t('landing.hero_features.draft')}</span>
                   </motion.button>
                 </motion.div>
 
@@ -109,11 +111,11 @@ const HeroSection: React.FC = () => {
                 >
                   <div className="flex gap-2 justify-center items-center sm:justify-start">
                     <Shield className="w-4 h-4 text-primary" />
-                    <span>Military-grade security</span>
+                    <span>{t('landing.hero_features.security')}</span>
                   </div>
                   <div className="flex gap-2 justify-center items-center sm:justify-start">
                     <Users className="w-4 h-4 text-primary" />
-                    <span>1000+ law firms</span>
+                    <span>{t('landing.hero_features.law_firms')}</span>
                   </div>
                 </motion.div>
               </div>

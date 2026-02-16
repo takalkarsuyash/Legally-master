@@ -4,6 +4,7 @@ import { useMemo } from "react"
 import { motion } from "framer-motion"
 import type { Variants } from "framer-motion"
 import { useNavigate } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 import { Brain, Database, MessageSquare, Calendar, FileText, Users, Zap, Shield } from "lucide-react"
 interface Benefit {
   icon: JSX.Element
@@ -23,43 +24,44 @@ const sectionFadeInUp: Variants = {
 
 const BenefitsSection: React.FC = () => {
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const benefits: Benefit[] = useMemo(
     () => [
       {
         icon: <Brain className="w-5 h-5 sm:w-6 sm:h-6" />,
-        title: "A2A Protocol Engine",
-        description: "Agent-to-Agent communication where David & Andrew collaborate for superior legal analysis and recommendations",
+        title: t("landing.benefits.items.a2a.title"),
+        description: t("landing.benefits.items.a2a.desc"),
         highlight: true,
       },
       {
         icon: <Database className="w-5 h-5 sm:w-6 sm:h-6" />,
-        title: "Advanced RAG System",
-        description: "Retrieval-Augmented Generation with context-aware responses and intelligent pattern matching",
+        title: t("landing.benefits.items.rag.title"),
+        description: t("landing.benefits.items.rag.desc"),
         highlight: true,
       },
       {
         icon: <MessageSquare className="w-5 h-5 sm:w-6 sm:h-6" />,
-        title: "Smart Document Queries",
-        description: "Ask complex legal questions and get intelligent lawyer recommendations with confidence scoring",
+        title: t("landing.benefits.items.query.title"),
+        description: t("landing.benefits.items.query.desc"),
       },
       {
         icon: <FileText className="w-5 h-5 sm:w-6 sm:h-6" />,
-        title: "Context-Aware Summarization",
-        description: "AI-powered document summarization that understands legal context and nuances",
+        title: t("landing.benefits.items.summarization.title"),
+        description: t("landing.benefits.items.summarization.desc"),
       },
       {
         icon: <Calendar className="w-5 h-5 sm:w-6 sm:h-6" />,
-        title: "Digital Advocate Diaries",
-        description: "Complete case management with digital diaries, reminders, and scheduling",
+        title: t("landing.benefits.items.diary.title"),
+        description: t("landing.benefits.items.diary.desc"),
       },
       {
         icon: <Users className="w-5 h-5 sm:w-6 sm:h-6" />,
-        title: "Ad-Hoc Finding",
-        description: "Connect with verified lawyers for consultations and hire legal experts instantly",
+        title: t("landing.benefits.items.finding.title"),
+        description: t("landing.benefits.items.finding.desc"),
       },
     ],
-    [],
+    [t],
   )
 
   return (
@@ -75,13 +77,13 @@ const BenefitsSection: React.FC = () => {
         >
           <div className="inline-flex items-center px-3 py-1.5 mb-3 text-xs rounded-full bg-primary/10 text-primary sm:px-4 sm:py-2 sm:text-sm sm:mb-4">
             <Zap className="mr-1.5 w-3 h-3 sm:mr-2 sm:w-4 sm:h-4" />
-            <span>Revolutionary Features</span>
+            <span>{t("landing.benefits.badge")}</span>
           </div>
           <h2 className="mb-3 text-xl font-bold sm:mb-4 sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl">
-            The <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">Future</span> of Legal Practice
+            {t("landing.benefits.title_prefix")} <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">{t("landing.benefits.title_highlight")}</span> {t("landing.benefits.title_suffix")}
           </h2>
           <p className="mx-auto max-w-2xl text-sm text-gray-600 sm:text-base md:text-lg">
-            Experience cutting-edge AI technology that transforms how legal professionals work, collaborate, and deliver results.
+            {t("landing.benefits.description")}
           </p>
         </motion.div>
 
@@ -141,10 +143,10 @@ const BenefitsSection: React.FC = () => {
         >
           <div className="p-4 bg-gradient-to-r rounded-xl border from-primary/10 to-secondary/10 border-primary/20 sm:p-6 md:p-8 sm:rounded-2xl">
             <h3 className="mb-3 text-lg font-bold text-gray-900 sm:mb-4 sm:text-xl md:text-2xl">
-              Ready to Experience These Features?
+              {t("landing.benefits.cta.title")}
             </h3>
             <p className="mb-4 text-sm text-gray-600 sm:mb-6 sm:text-base">
-              “Thousands trust LegalEase to cut confusion and take control of their legal decisions.”
+              {t("landing.benefits.cta.subtitle")}
             </p>
             <div className="flex flex-col gap-3 justify-center sm:flex-row sm:gap-4">
               <motion.button
@@ -153,7 +155,7 @@ const BenefitsSection: React.FC = () => {
                 onClick={() => navigate('/query')}
                 className="px-4 py-2 text-sm font-semibold text-white bg-gradient-to-r rounded-lg shadow-lg transition-all from-primary to-primary-dark hover:shadow-xl sm:px-6 sm:py-3"
               >
-                Try Search Query
+                {t("landing.benefits.cta.search_btn")}
               </motion.button>
               <motion.button
                 whileHover={{ y: -1 }}
@@ -161,7 +163,7 @@ const BenefitsSection: React.FC = () => {
                 onClick={() => navigate('/draft')}
                 className="px-4 py-2 text-sm font-semibold rounded-lg border-2 transition-all text-primary border-primary hover:bg-primary hover:text-white sm:px-6 sm:py-3"
               >
-                Draft Document
+                {t("landing.benefits.cta.draft_btn")}
               </motion.button>
             </div>
           </div>

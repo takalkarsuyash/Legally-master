@@ -57,7 +57,7 @@ export class RazorpayService {
     }
   }
 }
-}
+
 
 // Export singleton instance
 export const razorpayService = RazorpayService.getInstance()

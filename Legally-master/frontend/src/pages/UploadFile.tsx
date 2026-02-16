@@ -1,7 +1,9 @@
 import { useState, useRef } from "react";
+import { useTranslation } from 'react-i18next';
 import { useHash } from "../contexts/HashContext";
 
 const UploadFile = () => {
+  const { t } = useTranslation();
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadStatus, setUploadStatus] = useState<string>("");
@@ -28,11 +30,11 @@ const UploadFile = () => {
     ];
 
     if (file.size > maxSize) {
-      return "File size must be less than 50MB";
+      return t('upload_file.error.size');
     }
 
     if (!allowedTypes.includes(file.type)) {
-      return "File type not supported. Please upload images, PDFs, or documents.";
+      return t('upload_file.error.type');
     }
 
     return null;
@@ -81,8 +83,8 @@ const UploadFile = () => {
   const copyToClipboard = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text);
-      setUploadStatus("CID copied to clipboard!");
-      setTimeout(() => setUploadStatus("File uploaded successfully!"), 2000);
+      setUploadStatus(t('upload_file.success.copied'));
+      setTimeout(() => setUploadStatus(t('upload_file.success.uploaded')), 2000);
     } catch (err) {
       console.error("Failed to copy: ", err);
     }
@@ -125,7 +127,7 @@ const UploadFile = () => {
       setProgress(100);
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error(`${t('upload_file.error.http')} ${response.status}`);
       }
 
       const data = await response.json();
@@ -133,18 +135,18 @@ const UploadFile = () => {
 
       // Extract CID from lighthouse response
       const extractedCID =
-        data.lighthouseResponse?.Hash || data.cid || "No CID returned";
+        data.lighthouseResponse?.Hash || data.cid || t('upload_file.error.no_cid');
       console.log("Extracted CID:", extractedCID);
       setHashData({ hashId: extractedCID });
 
-      setUploadStatus("File uploaded successfully!");
+      setUploadStatus(t('upload_file.success.uploaded'));
     } catch (error) {
       console.error("Upload error:", error);
       setProgress(0);
       setUploadStatus(
         error instanceof Error
           ? error.message
-          : "Upload failed. Please try again."
+          : t('upload_file.error.generic')
       );
     } finally {
       setIsUploading(false);
@@ -222,7 +224,7 @@ const UploadFile = () => {
                         ></path>
                       </svg>
                       <p className="text-sm font-medium text-blue-600">
-                        Drop your file here
+                        {t('upload_file.drop_zone.drop')}
                       </p>
                     </>
                   ) : (
@@ -241,10 +243,10 @@ const UploadFile = () => {
                         />
                       </svg>
                       <p className="text-sm font-medium text-gray-900 mb-1">
-                        Click to upload or drag and drop
+                        {t('upload_file.drop_zone.click')}
                       </p>
                       <p className="text-xs text-gray-500">
-                        Images, PDFs, Documents (Max 50MB)
+                        {t('upload_file.drop_zone.formats')}
                       </p>
                     </>
                   )}
@@ -259,7 +261,7 @@ const UploadFile = () => {
                   onClick={resetUpload}
                   className="flex-1 py-2 px-4 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
                 >
-                  Remove File
+                  {t('upload_file.actions.remove')}
                 </button>
               </div>
             )}
@@ -268,7 +270,7 @@ const UploadFile = () => {
             {isUploading && (
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Uploading...</span>
+                  <span className="text-gray-600">{t('upload_file.actions.uploading')}</span>
                   <span className="text-gray-600">{progress}%</span>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2">
@@ -308,10 +310,10 @@ const UploadFile = () => {
                       d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                     ></path>
                   </svg>
-                  Uploading...
+                  {t('upload_file.actions.uploading')}
                 </div>
               ) : (
-                "Upload File"
+                t('upload_file.actions.upload')
               )}
             </button>
           </div>
@@ -350,17 +352,17 @@ const UploadFile = () => {
                 </svg>
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                Upload Successful!
+                {t('upload_file.success.title')}
               </h3>
               <p className="text-gray-600">
-                Your file is now permanently stored on IPFS
+                {t('upload_file.success.subtitle')}
               </p>
             </div>
 
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Content Identifier (CID):
+                  {t('upload_file.success.cid_label')}
                 </label>
                 <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg border">
                   <code className="flex-1 text-sm font-mono text-gray-800 break-all">
@@ -395,21 +397,21 @@ const UploadFile = () => {
                   rel="noopener noreferrer"
                   className="flex-1 bg-blue-500 text-white text-center py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors"
                 >
-                  View File
+                  {t('upload_file.actions.view')}
                 </a>
                 <button
                   onClick={resetUpload}
                   className="flex-1 bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition-colors"
                 >
-                  Upload Another
+                  {t('upload_file.actions.another')}
                 </button>
               </div>
 
               <div className="text-xs text-gray-500 text-center">
                 <p>
-                  Your file is decentralized and will be available permanently
+                  {t('upload_file.footer.decentralized')}
                 </p>
-                <p>Share the CID with others to give them access</p>
+                <p>{t('upload_file.footer.share')}</p>
               </div>
             </div>
           </div>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useTranslation } from 'react-i18next';
 import { calculatePropertyTax } from "../tax-engine/calculateTax";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
@@ -94,6 +95,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({ value, onChange, options, l
 };
 
 export default function PropertyTaxForm() {
+  const { t } = useTranslation();
   const [city, setCity] = useState<City>("Delhi");
   const [result, setResult] = useState<ReturnType<
     typeof calculatePropertyTax
@@ -122,7 +124,7 @@ export default function PropertyTaxForm() {
 
   const handleSubmit = () => {
     if (!formData.propertyAge) {
-      alert("Please fill required fields");
+      alert(t('property_tax.form.error_required'));
       return;
     }
 
@@ -156,7 +158,7 @@ export default function PropertyTaxForm() {
       setResult(taxResult);
     } catch (error) {
       console.error(error);
-      alert("Error calculating tax. Please check your inputs.");
+      alert(t('property_tax.form.error_calc'));
     }
   };
 
@@ -169,24 +171,24 @@ export default function PropertyTaxForm() {
   ];
 
   const zoneOptions = [
-      { value: "A", label: "Zone A" },
-      { value: "B", label: "Zone B" },
-      { value: "C", label: "Zone C" }
+      { value: "A", label: t('property_tax.form.options.zone_a') },
+      { value: "B", label: t('property_tax.form.options.zone_b') },
+      { value: "C", label: t('property_tax.form.options.zone_c') }
   ];
 
   const usageOptions = [
-      { value: "SelfOccupied", label: "Self Occupied" },
-      { value: "Rented", label: "Rented" }
+      { value: "SelfOccupied", label: t('property_tax.form.options.self_occupied') },
+      { value: "Rented", label: t('property_tax.form.options.rented') }
   ];
 
   const typeOptions = [
-      { value: "Residential", label: "Residential" },
-      { value: "Commercial", label: "Commercial" }
+      { value: "Residential", label: t('property_tax.form.options.residential') },
+      { value: "Commercial", label: t('property_tax.form.options.commercial') }
   ];
   
   const constructionOptions = [
-      { value: "RCC", label: "RCC" },
-      { value: "NonRCC", label: "Non RCC" }
+      { value: "RCC", label: t('property_tax.form.options.rcc') },
+      { value: "NonRCC", label: t('property_tax.form.options.non_rcc') }
   ];
 
   return (
@@ -197,15 +199,15 @@ export default function PropertyTaxForm() {
                 <Calculator className="w-8 h-8 text-primary" />
             </div>
             <div>
-                <h2 className="text-2xl font-bold text-gray-900">Property Tax Calculator</h2>
-                <p className="text-gray-600 text-sm">Calculate your estimated property tax based on city regulations</p>
+                <h2 className="text-2xl font-bold text-gray-900">{t('property_tax.form.title')}</h2>
+                <p className="text-gray-600 text-sm">{t('property_tax.form.subtitle')}</p>
             </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             <div>
                 <CustomSelect 
-                    label="Select City"
+                    label={t('property_tax.form.select_city')}
                     icon={MapPin}
                     value={city}
                     onChange={(val) => setCity(val as City)}
@@ -226,12 +228,12 @@ export default function PropertyTaxForm() {
                          <div>
                             <label className={labelClass}>
                                 <Ruler className="w-4 h-4 text-primary" />
-                                Area (sq ft)
+                                {t('property_tax.form.area')}
                             </label>
                             <input
                                 name="area"
                                 type="number"
-                                placeholder="e.g. 1200"
+                                placeholder={t('property_tax.form.placeholders.area')}
                                 value={formData.area || ""}
                                 onChange={handleInputChange}
                                 className={inputClass}
@@ -239,7 +241,7 @@ export default function PropertyTaxForm() {
                         </div>
                         <div>
                             <CustomSelect 
-                                label="Property Type"
+                                label={t('property_tax.form.property_type')}
                                 icon={Building}
                                 value={formData.propertyType || "Residential"}
                                 onChange={(val) => handleSelectChange("propertyType", val)}
@@ -248,7 +250,7 @@ export default function PropertyTaxForm() {
                         </div>
                         <div>
                             <CustomSelect 
-                                label="Usage"
+                                label={t('property_tax.form.usage')}
                                 icon={User}
                                 value={formData.usage || "SelfOccupied"}
                                 onChange={(val) => handleSelectChange("usage", val)}
@@ -258,12 +260,12 @@ export default function PropertyTaxForm() {
                         <div>
                            <label className={labelClass}>
                                 <Calendar className="w-4 h-4 text-primary" />
-                                Property Age (Years)
+                                {t('property_tax.form.property_age')}
                             </label>
                             <input
                                 name="propertyAge"
                                 type="number"
-                                placeholder="e.g. 5"
+                                placeholder={t('property_tax.form.placeholders.age')}
                                 value={formData.propertyAge || ""}
                                 onChange={handleInputChange}
                                 className={inputClass}
@@ -271,7 +273,7 @@ export default function PropertyTaxForm() {
                         </div>
                         <div>
                             <CustomSelect 
-                                label="Zone"
+                                label={t('property_tax.form.zone')}
                                 icon={MapPin}
                                 value={formData.zone || "A"}
                                 onChange={(val) => handleSelectChange("zone", val)}
@@ -292,12 +294,12 @@ export default function PropertyTaxForm() {
                          <div>
                             <label className={labelClass}>
                                 <Briefcase className="w-4 h-4 text-primary" />
-                                Monthly Rent (₹)
+                                {t('property_tax.form.monthly_rent')}
                             </label>
                             <input
                                 name="monthlyRent"
                                 type="number"
-                                placeholder="e.g. 15000"
+                                placeholder={t('property_tax.form.placeholders.rent')}
                                 value={formData.monthlyRent || ""}
                                 onChange={handleInputChange}
                                 className={inputClass}
@@ -306,7 +308,7 @@ export default function PropertyTaxForm() {
                         <div>
                            <label className={labelClass}>
                                 <Calendar className="w-4 h-4 text-primary" />
-                                Property Age (Years)
+                                {t('property_tax.form.property_age')}
                             </label>
                             <input
                                 name="propertyAge"
@@ -319,7 +321,7 @@ export default function PropertyTaxForm() {
                         </div>
                         <div>
                             <CustomSelect 
-                                label="Zone"
+                                label={t('property_tax.form.zone')}
                                 icon={MapPin}
                                 value={formData.zone || "A"}
                                 onChange={(val) => handleSelectChange("zone", val)}
@@ -340,12 +342,12 @@ export default function PropertyTaxForm() {
                          <div>
                             <label className={labelClass}>
                                 <Briefcase className="w-4 h-4 text-primary" />
-                                Market Value (₹)
+                                {t('property_tax.form.market_value')}
                             </label>
                             <input
                                 name="marketValue"
                                 type="number"
-                                placeholder="e.g. 5000000"
+                                placeholder={t('property_tax.form.placeholders.value')}
                                 value={formData.marketValue || ""}
                                 onChange={handleInputChange}
                                 className={inputClass}
@@ -353,7 +355,7 @@ export default function PropertyTaxForm() {
                         </div>
                         <div>
                              <CustomSelect 
-                                label="Construction Type"
+                                label={t('property_tax.form.construction_type')}
                                 icon={Building}
                                 value={formData.constructionType || "RCC"}
                                 onChange={(val) => handleSelectChange("constructionType", val)}
@@ -363,7 +365,7 @@ export default function PropertyTaxForm() {
                          <div>
                            <label className={labelClass}>
                                 <Calendar className="w-4 h-4 text-primary" />
-                                Property Age (Years)
+                                {t('property_tax.form.property_age')}
                             </label>
                             <input
                                 name="propertyAge"
@@ -376,7 +378,7 @@ export default function PropertyTaxForm() {
                         </div>
                          <div>
                             <CustomSelect 
-                                label="Usage"
+                                label={t('property_tax.form.usage')}
                                 icon={User}
                                 value={formData.usage || "SelfOccupied"}
                                 onChange={(val) => handleSelectChange("usage", val)}
@@ -396,7 +398,7 @@ export default function PropertyTaxForm() {
                 className="px-8 py-3 bg-gradient-to-r from-primary to-primary-dark text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center gap-2"
             >
                 <Calculator className="w-5 h-5" />
-                Calculate Tax
+                {t('property_tax.form.calculate_btn')}
             </motion.button>
         </div>
 
@@ -413,12 +415,12 @@ export default function PropertyTaxForm() {
                             <Info className="w-6 h-6 text-primary" />
                         </div>
                         <div>
-                            <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-1">Estimated Tax Amount</h3>
+                            <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-1">{t('property_tax.result.title')}</h3>
                             <div className="text-4xl font-bold text-gray-900">
                                 ₹ {Number(result.taxAmount).toLocaleString('en-IN', { maximumFractionDigits: 2 })}
                             </div>
                             <p className="text-sm text-gray-600 mt-2">
-                                Based on {result.system} system for {city}.
+                                {t('property_tax.result.disclaimer', { system: result.system, city: city })}
                             </p>
                         </div>
                     </div>

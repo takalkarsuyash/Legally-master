@@ -4,6 +4,8 @@ export interface UserProfile {
   username: string | null;
   name: string | null;
   surname: string | null;
+  email?: string;
+  profile_url?: string;
   created_at: string;
   updated_at: string;
 }

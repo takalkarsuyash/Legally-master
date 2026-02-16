@@ -37,6 +37,11 @@ interface RazorpayButtonProps {
 
   // Disabled state
   disabled?: boolean;
+
+  // Events
+  onPaymentSuccess?: (response: any) => void;
+  onPaymentFailure?: (response: any) => void;
+  onPaymentError?: (error: any) => void;
 }
 
 const RazorpayButton: React.FC<RazorpayButtonProps> = ({

@@ -1,9 +1,11 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import PropertyTaxForm from '../components/PropertyTaxForm';
 import { Calculator } from 'lucide-react';
 
 const PropertyTax: React.FC = () => {
+  const { t } = useTranslation();
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -28,17 +30,17 @@ const PropertyTax: React.FC = () => {
             whileHover={{ scale: 1.05 }}
           >
             <Calculator className="w-4 h-4 mr-2 text-primary" />
-            <span className="text-primary font-medium">Smart Tax Calculation</span>
+            <span className="text-primary font-medium">{t('property_tax.header.badge')}</span>
           </motion.div>
           <h1 className="mb-4 text-4xl font-bold tracking-wide lg:text-6xl">
-            <span className="text-gray-900">Property Tax</span>
+            <span className="text-gray-900">{t('property_tax.header.title_prefix')}</span>
             <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary-dark to-secondary">
-              Calculator
+              {t('property_tax.header.title_suffix')}
             </span>
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            Estimate your property tax instantly based on local municipal regulations
+            {t('property_tax.header.subtitle')}
           </p>
         </motion.div>
 

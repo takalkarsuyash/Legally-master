@@ -1,0 +1,372 @@
+{
+  "navbar": {
+    "login": "Login",
+    "home": "Home",
+    "summarisation": "Summarisation",
+    "query": "Legal Queries",
+    "draft": "Draft Documents",
+    "property_tax": "Property Tax",
+    "find_lawyer": "Find Lawyer",
+    "retrieve": "Retrieve",
+    "profile": "Profile"
+  },
+  "landing": {
+    "hero_title": "AI-Powered Legal Assistance",
+    "hero_subtitle": "Simplifying legal processes for everyone. Experience cutting-edge AI technology that transforms how legal professionals work, collaborate, and deliver superior results.",
+    "get_started": "Get Started",
+    "hero_features": {
+      "search": "Search Query",
+      "draft": "Draft Document",
+      "security": "Military-grade security",
+      "law_firms": "1000+ law firms"
+    },
+    "features": "Features",
+    "benefits": {
+      "badge": "Revolutionary Features",
+      "title_prefix": "The",
+      "title_highlight": "Future",
+      "title_suffix": "of Legal Practice",
+      "description": "Experience cutting-edge AI technology that transforms how legal professionals work, collaborate, and deliver results.",
+      "items": {
+        "a2a": {
+          "title": "A2A Protocol Engine",
+          "desc": "Agent-to-Agent communication where David & Andrew collaborate for superior legal analysis and recommendations"
+        },
+        "rag": {
+          "title": "Advanced RAG System",
+          "desc": "Retrieval-Augmented Generation with context-aware responses and intelligent pattern matching"
+        },
+        "query": {
+          "title": "Smart Document Queries",
+          "desc": "Ask complex legal questions and get intelligent lawyer recommendations with confidence scoring"
+        },
+        "summarization": {
+          "title": "Context-Aware Summarization",
+          "desc": "AI-powered document summarization that understands legal context and nuances"
+        },
+        "diary": {
+          "title": "Digital Advocate Diaries",
+          "desc": "Complete case management with digital diaries, reminders, and scheduling"
+        },
+        "finding": {
+          "title": "Ad-Hoc Finding",
+          "desc": "Connect with verified lawyers for consultations and hire legal experts instantly"
+        }
+      },
+      "cta": {
+        "title": "Ready to Experience These Features?",
+        "subtitle": "Thousands trust LegalEase to cut confusion and take control of their legal decisions.",
+        "search_btn": "Try Search Query",
+        "draft_btn": "Draft Document"
+      }
+    },
+    "footer": {
+      "desc": "Empowering legal professionals with AI to streamline research, documentation, and case management within the Indian legal ecosystem.",
+      "sections": {
+        "product": "Product",
+        "company": "Company",
+        "resources": "Resources"
+      },
+      "links": {
+        "research": "Case Research Tool",
+        "drafting": "Document Drafting",
+        "management": "Case Management",
+        "analytics": "Analytics Dashboard",
+        "about": "About Us",
+        "careers": "Careers",
+        "press": "Press",
+        "contact": "Contact",
+        "blog": "Blog",
+        "insights": "Legal Insights",
+        "studies": "Case Studies",
+        "help": "Help Center"
+      },
+      "rights": "LegalEase. All rights reserved.",
+      "made_with": "Made with"
+    }
+  },
+  "profile": {
+    "title": "Profile",
+    "your_tokens": "Your Tokens",
+    "est_gas": "Est. Wallet Gas",
+    "token_amount": "Token Amount",
+    "rate_info": "Rate: 10,000 tokens = 0.01 ETH",
+    "eth_to_pay": "ETH to pay",
+    "total": "Total",
+    "purchase": "Purchase",
+    "processing": "Processing...",
+    "change_photo": "Change",
+    "first_name": "First name",
+    "last_name": "Last name",
+    "save": "Save Changes",
+    "saving": "Saving...",
+    "sign_out": "Sign Out",
+    "disconnect": "Disconnect",
+    "loading": "Loading your profile..."
+  },
+  "summarisation": {
+    "steps": {
+      "upload": {
+        "title": "Upload Document",
+        "desc": "Select or drag & drop your legal document"
+      },
+      "process": {
+        "title": "AI Processing",
+        "desc": "Our AI analyzes and extracts key information"
+      },
+      "review": {
+        "title": "Review & Chat",
+        "desc": "Get summary and ask questions about your document"
+      }
+    },
+    "header": {
+      "badge": "AI-Powered Legal Analysis",
+      "title_prefix": "RAG Enabled Document",
+      "title_highlight": "Summarizer",
+      "subtitle": "Transform complex legal documents into clear, actionable insights with our advanced AI technology"
+    },
+    "upload": {
+      "title": "Upload Document",
+      "drag_drop": "Drag and drop your document here",
+      "browse": "Browse Files",
+      "supported": "Supported: PDF, DOC, DOCX, TXT",
+      "ready": "Ready for AI analysis"
+    },
+    "panel": {
+      "summary_title": "Document Summary",
+      "chat_title": "Document Chat",
+      "view_summary": "View Summary",
+      "ask_questions": "Ask Questions"
+    },
+    "empty_state": {
+      "title": "Ready to Analyze",
+      "subtitle": "Upload a legal document to get started",
+      "description": "Our AI will provide comprehensive insights and summaries"
+    },
+    "ai": {
+      "model_label": "AI Model",
+      "use_asi": "Use ASI:",
+      "cta_secondary": "Merchant Login",
+      "features": {
+        "analyzing": "Analyzing Document",
+        "analyzing_desc": "Our AI is processing your document...",
+        "error": "Processing Error",
+        "try_again": "Try Again"
+      },
+      "chat": {
+        "placeholder": "Ask a question about the document..."
+      }
+    }
+  },
+  "property_tax": {
+    "header": {
+      "badge": "Smart Tax Calculation",
+      "title_prefix": "Property Tax",
+      "title_suffix": "Calculator",
+      "subtitle": "Estimate your property tax instantly based on local municipal regulations"
+    },
+    "form": {
+      "title": "Property Tax Calculator",
+      "subtitle": "Calculate your estimated property tax based on city regulations",
+      "select_city": "Select City",
+      "area": "Area (sq ft)",
+      "property_type": "Property Type",
+      "usage": "Usage",
+      "property_age": "Property Age (Years)",
+      "zone": "Zone",
+      "monthly_rent": "Monthly Rent (₹)",
+      "market_value": "Market Value (₹)",
+      "construction_type": "Construction Type",
+      "calculate_btn": "Calculate Tax",
+      "error_required": "Please fill in required fields",
+      "error_calc": "Error calculating tax. Please check your inputs.",
+      "placeholders": {
+        "area": "e.g. 1200",
+        "age": "e.g. 5",
+        "rent": "e.g. 15000",
+        "value": "e.g. 5000000"
+      },
+      "options": {
+        "residential": "Residential",
+        "commercial": "Commercial",
+        "self_occupied": "Self Occupied",
+        "rented": "Rented",
+        "rcc": "RCC",
+        "non_rcc": "Non RCC",
+        "zone_a": "Zone A",
+        "zone_b": "Zone B",
+        "zone_c": "Zone C"
+      }
+    },
+    "result": {
+      "title": "Estimated Tax Amount",
+      "disclaimer": "Based on {{system}} system for {{city}}."
+    }
+  },
+  "upload_file": {
+    "error": {
+      "size": "File size must be less than 50MB",
+      "type": "File type not supported. Please upload images, PDFs, or documents.",
+      "http": "HTTP error! status:",
+      "no_cid": "No CID returned",
+      "generic": "Upload failed. Please try again."
+    },
+    "success": {
+      "copied": "CID copied to clipboard!",
+      "uploaded": "File uploaded successfully!",
+      "title": "Upload Successful!",
+      "subtitle": "Your file is now permanently stored on IPFS",
+      "cid_label": "Content Identifier (CID):"
+    },
+    "drop_zone": {
+      "drop": "Drop your file here",
+      "click": "Click to upload or drag and drop",
+      "formats": "Images, PDFs, Documents (Max 50MB)"
+    },
+    "actions": {
+      "remove": "Remove File",
+      "uploading": "Uploading...",
+      "upload": "Upload File",
+      "view": "View File",
+      "another": "Upload Another"
+    },
+    "footer": {
+      "decentralized": "Your file is decentralized and will be available permanently",
+      "share": "Share the CID with others to give them access"
+    }
+  },
+  "find_lawyer": {
+    "badge": "Professional Property Legal Help",
+    "title_prefix": "Find Top",
+    "title_suffix": "Property Lawyers",
+    "subtitle": "Connect with verified property dispute and real estate legal experts in your city.",
+    "search_placeholder": "Enter City (e.g. Mumbai, Delhi)...",
+    "searching": "Searching...",
+    "search_btn": "Find Lawyers",
+    "no_results_toast": "No lawyers found in this area",
+    "search_error": "Failed to fetch lawyers. Please try again.",
+    "contact_sent": "Contact request sent to",
+    "no_results_title": "No lawyers found in this location",
+    "no_results_desc": "Try searching for a major city nearby.",
+    "website_link": "Website",
+    "enter_location_error": "Please enter a location"
+  },
+  "draft": {
+    "header": {
+      "badge": "AI-Powered Legal Drafting",
+      "title": "Legal Document Generator",
+      "subtitle": "Create professional legal documents with AI assistance, tailored for Indian law."
+    },
+    "toggles": {
+      "streaming": "Streaming Mode",
+      "template": "Use Template Data"
+    },
+    "form": {
+      "title": "Document Details",
+      "doc_type": "Document Type",
+      "doc_type_placeholder": "Select Document Type",
+      "party_a": "Party A (First Party)",
+      "party_b": "Party B (Second Party)",
+      "additional_details": "Additional Details",
+      "additional_details_placeholder": "Enter any additional terms, conditions, or context...",
+      "specific_details": "Specific Details",
+      "specific_details_placeholder": "Enter specific details relevant to this document type...",
+      "state": "State/UT of Jurisdiction",
+      "state_placeholder": "Select State/UT",
+      "generate_btn": "Generate Document",
+      "generating": "Generating...",
+      "processing": "Processing..."
+    },
+    "preview": {
+      "title": "Generated Document",
+      "empty_title": "Ready to Generate",
+      "empty_desc": "Fill out the form and your document will appear here."
+    },
+    "history": {
+      "title": "Your Document History",
+      "view": "View / Edit"
+    }
+  },
+  "document_query": {
+    "header": {
+      "service_name": "A2A Protocol Service",
+      "title_main": "LegalEase",
+      "title_sub": "Assistant Chatbot",
+      "subtitle": "Ask any legal question and get precise answers using ASI models",
+      "asi_models": "ASI Models",
+      "gemini_models": "Gemini Models"
+    },
+    "modal": {
+      "title": "A2A Protocol",
+      "description": "Agent-to-Agent communication protocol where David & Andrew pass context and analysis to each other.",
+      "asi_benefit": "This results in highest benchmarks using ASI models with intelligent model selection for superior legal recommendations.",
+      "gemini_benefit": "This results in highest benchmarks of results and best-in-class reinforcement learning for superior legal recommendations.",
+      "capabilities_title": "ASI Model Capabilities:",
+      "roles": {
+        "david": "David",
+        "david_desc": "Pattern Matching",
+        "andrew": "Andrew",
+        "andrew_desc": "Response Formatting"
+      }
+    },
+    "empty_state": {
+      "title": "Ask Your Legal Question",
+      "description": "Ask any legal question and our AI agents will provide expert legal analysis and guidance.",
+      "upload_btn": "Upload Document (Optional)",
+      "start_btn": "Start Chatting"
+    },
+    "chat": {
+      "thinking": "Thinking...",
+      "andrew_desc": "Legal Strategist & Presenter",
+      "error_generic": "Sorry, I encountered an error processing your message. Please try again.",
+      "error_tech": "Technical difficulty. Please try again later.",
+      "placeholder": "Ask any legal question... (e.g., 'I need help with a contract dispute')"
+    },
+    "progress": {
+      "david_analyzing_asi": "ASI David is analyzing your legal question using ASI models...",
+      "david_analyzing_gemini": "David is analyzing your legal question using pattern matching...",
+      "andrew_formatting_asi": "ASI Andrew is formatting your response using ASI models...",
+      "andrew_formatting_gemini": "Andrew is formatting your response using pattern insights..."
+    },
+    "lawyer_card": {
+      "recommended": "Recommended",
+      "match": "Match:",
+      "website_na": "Website not available",
+      "why_recommended": "Why recommended:"
+    }
+  },
+  "auth": {
+    "signin": {
+      "title": "Sign in to your account",
+      "subtitle": "Access LegalEase's AI-powered features",
+      "email_label": "Email address",
+      "password_label": "Password",
+      "submit": "Sign in",
+      "submitting": "Signing in...",
+      "or_continue": "Or continue with",
+      "no_account": "Don't have an account?",
+      "signup_link": "Sign Up",
+      "terms": "By signing in, you agree to our Terms of Service and Privacy Policy."
+    },
+    "signup": {
+      "title": "Create an account",
+      "subtitle": "Join LegalEase to start drafting smarter",
+      "first_name": "First Name",
+      "last_name": "Last Name",
+      "gender": "Gender",
+      "select_gender": "Select Gender",
+      "male": "Male",
+      "female": "Female",
+      "other": "Other / Prefer not to say",
+      "submit": "Sign Up",
+      "submitting": "Creating account...",
+      "already_have_account": "Already have an account?",
+      "signin_link": "Sign In"
+    }
+  },
+  "language_toggle": {
+    "en": "English",
+    "hi": "Hindi",
+    "mr": "Marathi"
+  }
+}

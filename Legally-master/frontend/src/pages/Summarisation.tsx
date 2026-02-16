@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 import {
@@ -43,25 +44,26 @@ interface FileInfo {
   type: string;
 }
 
-const steps: Step[] = [
-  {
-    title: "Upload Document",
-    description: "Select or drag & drop your legal document",
-    icon: Upload
-  },
-  {
-    title: "AI Processing",
-    description: "Our AI analyzes and extracts key information",
-    icon: Scale
-  },
-  {
-    title: "Review & Chat",
-    description: "Get summary and ask questions about your document",
-    icon: MessageSquare
-  }
-];
-
 const DocumentSummarizer: React.FC = () => {
+  const { t } = useTranslation();
+
+  const steps: Step[] = useMemo(() => [
+    {
+      title: t('summarisation.steps.upload.title'),
+      description: t('summarisation.steps.upload.desc'),
+      icon: Upload
+    },
+    {
+      title: t('summarisation.steps.process.title'),
+      description: t('summarisation.steps.process.desc'),
+      icon: Scale
+    },
+    {
+      title: t('summarisation.steps.review.title'),
+      description: t('summarisation.steps.review.desc'),
+      icon: MessageSquare
+    }
+  ], [t]);
   const [activeStep, setActiveStep] = useState(0);
   const [file, setFile] = useState<File | null>(null);
   const [summary, setSummary] = useState<string>('');
@@ -466,17 +468,17 @@ const DocumentSummarizer: React.FC = () => {
               whileHover={{ scale: 1.05 }}
             >
               <SiRobotframework className="mr-2 w-3 h-3 sm:w-4 sm:h-4 text-primary" />
-              <span className="font-medium text-primary">AI-Powered Legal Analysis</span>
+              <span className="font-medium text-primary">{t('summarisation.header.badge')}</span>
             </motion.div>
             <h1 className="mb-2 text-2xl font-bold tracking-wide sm:mb-4 sm:text-4xl lg:text-6xl">
-              <span className="text-gray-900">RAG Enabled Document</span>
+              <span className="text-gray-900">{t('summarisation.header.title_prefix')}</span>
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary-dark to-secondary">
-                Summarizer
+                {t('summarisation.header.title_highlight')}
               </span>
             </h1>
             <p className="px-4 mx-auto max-w-2xl text-base leading-relaxed text-gray-600 sm:text-xl">
-              Transform complex legal documents into clear, actionable insights with our advanced AI technology
+              {t('summarisation.header.subtitle')}
             </p>
           </div>
         </motion.div>
@@ -549,7 +551,7 @@ const DocumentSummarizer: React.FC = () => {
               <div className="p-1.5 sm:p-2 rounded-xl bg-gradient-to-br from-primary to-primary-dark">
                 <Upload className="w-4 h-4 text-white sm:w-6 sm:h-6" />
               </div>
-              <span>Upload Document</span>
+              <span>{t('summarisation.upload.title')}</span>
             </h2>
 
             <motion.div
@@ -566,11 +568,11 @@ const DocumentSummarizer: React.FC = () => {
                 >
                   <Upload className="w-6 h-6 text-white sm:w-10 sm:h-10" />
                 </motion.div>
-                <h3 className="mb-1 text-sm font-bold text-gray-900 sm:mb-2 sm:text-lg">Drag and drop your document here</h3>
+                <h3 className="mb-1 text-sm font-bold text-gray-900 sm:mb-2 sm:text-lg">{t('summarisation.upload.drag_drop')}</h3>
                 <p className="mb-4 text-xs text-gray-600 sm:mb-8 sm:text-base">or click to browse your files</p>
                 <label className="inline-flex items-center px-4 py-2 text-xs text-white bg-gradient-to-r rounded-xl shadow-lg transition-all duration-300 cursor-pointer sm:px-8 sm:py-4 sm:text-base from-primary to-primary-dark hover:shadow-xl hover:scale-105">
                   <FileText className="mr-2 w-3 h-3 sm:mr-3 sm:w-5 sm:h-5" />
-                  <span className="font-semibold">Browse Files</span>
+                  <span className="font-semibold">{t('summarisation.upload.browse')}</span>
                   <input
                     ref={fileInputRef}
                     type="file"
@@ -579,7 +581,7 @@ const DocumentSummarizer: React.FC = () => {
                     accept=".pdf,.doc,.docx,.txt"
                   />
                 </label>
-                <p className="mt-3 text-xs text-gray-500 sm:mt-6 sm:text-sm">Supported: PDF, DOC, DOCX, TXT</p>
+                <p className="mt-3 text-xs text-gray-500 sm:mt-6 sm:text-sm">{t('summarisation.upload.supported')}</p>
               </div>
             </motion.div>
 
@@ -597,7 +599,7 @@ const DocumentSummarizer: React.FC = () => {
                     </div>
                     <div>
                       <span className="block text-sm font-bold text-gray-900 sm:text-base">{file.name}</span>
-                      <span className="text-xs text-gray-600 sm:text-sm">Ready for AI analysis</span>
+                      <span className="text-xs text-gray-600 sm:text-sm">{t('summarisation.upload.ready')}</span>
                     </div>
                   </div>
                   <ChevronRight className="w-4 h-4 sm:w-6 sm:h-6 text-primary" />
@@ -618,7 +620,7 @@ const DocumentSummarizer: React.FC = () => {
                 <div className="p-1.5 sm:p-2 rounded-xl bg-gradient-to-br from-secondary to-primary">
                   {showChat ? <MessageSquare className="w-4 h-4 text-white sm:w-6 sm:h-6" /> : <FileText className="w-4 h-4 text-white sm:w-6 sm:h-6" />}
                 </div>
-                <span>{showChat ? 'Document Chat' : 'Document Summary'}</span>
+                <span>{showChat ? t('summarisation.panel.chat_title') : t('summarisation.panel.summary_title')}</span>
               </h2>
               {summary && documentContext && (
                 <motion.button
@@ -627,7 +629,7 @@ const DocumentSummarizer: React.FC = () => {
                   onClick={() => setShowChat(!showChat)}
                   className="px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm text-primary bg-primary/10 rounded-xl border border-primary/20 hover:bg-primary/20 transition-all"
                 >
-                  {showChat ? 'View Summary' : 'Ask Questions'}
+                  {showChat ? t('summarisation.panel.view_summary') : t('summarisation.panel.ask_questions')}
                 </motion.button>
               )}
             </div>
@@ -641,7 +643,7 @@ const DocumentSummarizer: React.FC = () => {
               >
                 <div className="flex flex-col space-y-2 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
                   <div className="flex items-center space-x-3">
-                    <label className="text-sm font-medium text-gray-700">AI Model:</label>
+                    <label className="text-sm font-medium text-gray-700">{t('summarisation.ai.model_label')}</label>
                     <select
                       value={selectedASIModel}
                       onChange={(e) => setSelectedASIModel(e.target.value as ASIModel)}
@@ -654,7 +656,7 @@ const DocumentSummarizer: React.FC = () => {
                     </select>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <label className="text-sm font-medium text-gray-700">Use ASI:</label>
+                    <label className="text-sm font-medium text-gray-700">{t('summarisation.ai.use_asi')}</label>
                     <button
                       onClick={() => setUseASIForChat(!useASIForChat)}
                       className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${useASIForChat ? 'bg-primary' : 'bg-gray-300'
@@ -687,8 +689,8 @@ const DocumentSummarizer: React.FC = () => {
                     <div className="absolute inset-1 bg-white rounded-full sm:inset-2"></div>
                   </div>
                   <div className="text-center">
-                    <h3 className="mb-1 text-base font-bold sm:text-xl text-primary sm:mb-2">Analyzing Document</h3>
-                    <p className="text-sm text-gray-600 sm:text-base">Our AI is processing your document...</p>
+                    <h3 className="mb-1 text-base font-bold sm:text-xl text-primary sm:mb-2">{t('summarisation.states.analyzing')}</h3>
+                    <p className="text-sm text-gray-600 sm:text-base">{t('summarisation.states.analyzing_desc')}</p>
                   </div>
                 </motion.div>
               ) : error ? (
@@ -704,7 +706,7 @@ const DocumentSummarizer: React.FC = () => {
                       <AlertCircle className="w-4 h-4 text-white sm:w-6 sm:h-6" />
                     </div>
                     <div className="flex-1">
-                      <h3 className="mb-1 text-sm font-bold text-red-800 sm:text-base sm:mb-2">Processing Error</h3>
+                      <h3 className="mb-1 text-sm font-bold text-red-800 sm:text-base sm:mb-2">{t('summarisation.states.error')}</h3>
                       <p className="mb-2 text-xs text-red-700 sm:text-sm sm:mb-4">{error}</p>
                       <motion.button
                         whileHover={{ scale: 1.02 }}
@@ -712,7 +714,7 @@ const DocumentSummarizer: React.FC = () => {
                         onClick={resetForm}
                         className="px-3 py-1.5 sm:px-6 sm:py-3 text-xs sm:text-sm text-white rounded-xl transition-all bg-gradient-to-r from-primary to-primary-dark hover:shadow-lg"
                       >
-                        Try Again
+                        {t('summarisation.states.try_again')}
                       </motion.button>
                     </div>
                   </div>
@@ -770,7 +772,7 @@ const DocumentSummarizer: React.FC = () => {
                               <div className="w-2 h-2 rounded-full animate-bounce bg-primary" style={{ animationDelay: '0.1s' }}></div>
                               <div className="w-2 h-2 rounded-full animate-bounce bg-primary" style={{ animationDelay: '0.2s' }}></div>
                             </div>
-                            <span className="text-xs text-gray-600 sm:text-sm">Thinking...</span>
+                            <span className="text-xs text-gray-600 sm:text-sm">{t('summarisation.ai.thinking')}</span>
                           </div>
                         </div>
                       </motion.div>
@@ -784,7 +786,7 @@ const DocumentSummarizer: React.FC = () => {
                         type="text"
                         value={inputValue}
                         onChange={(e) => setInputValue(e.target.value)}
-                        placeholder="Ask a question about the document..."
+                        placeholder={t('summarisation.chat.placeholder')}
                         disabled={!documentContext || isProcessingMessage}
                         className="flex-1 px-3 py-2 text-sm rounded-xl border backdrop-blur-sm transition-all sm:px-4 sm:py-3 border-white/40 bg-white/60 focus:ring-2 focus:ring-primary focus:border-primary disabled:bg-gray-100 disabled:cursor-not-allowed"
                       />
@@ -906,9 +908,9 @@ const DocumentSummarizer: React.FC = () => {
                     <FileText className="w-8 h-8 sm:w-12 sm:h-12 text-primary" />
                   </motion.div>
                   <div>
-                    <h3 className="mb-1.5 sm:mb-3 text-base sm:text-xl font-bold text-gray-900">Ready to Analyze</h3>
-                    <p className="mb-1 text-sm text-gray-600 sm:text-base sm:mb-2">Upload a legal document to get started</p>
-                    <p className="text-xs text-gray-500 sm:text-sm">Our AI will provide comprehensive insights and summaries</p>
+                    <h3 className="mb-1.5 sm:mb-3 text-base sm:text-xl font-bold text-gray-900">{t('summarisation.empty_state.title')}</h3>
+                    <p className="mb-1 text-sm text-gray-600 sm:text-base sm:mb-2">{t('summarisation.empty_state.subtitle')}</p>
+                    <p className="text-xs text-gray-500 sm:text-sm">{t('summarisation.empty_state.description')}</p>
                   </div>
                 </motion.div>
               )}
