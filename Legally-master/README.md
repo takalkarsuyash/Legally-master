@@ -1,6 +1,6 @@
-# Legally – AI-Powered Legal SuperApp
+# LegalEase – AI-Powered Legal Assistant For Common People
 
-Legally provides an AI-driven system for document analysis, generation, consultation, and case management.
+LegalEase provides an AI-driven system for document analysis, generation, consultation, and case management.
 It integrates **ASI models** (Agentverse.ai), **MeTTa RAG**, and **Fetch.ai agents** for collaborative, context-aware legal solutions.
 
 **Repository**: [https://github.com/ayuxy027/Legally](https://github.com/ayuxy027/Legally)
@@ -162,11 +162,15 @@ Legally integrates several layers of technology:
 
 ```bash
 git clone <repo-url>
-cd legally
-npm install
-npm run frontend:install
+cd Legally-master
+## frontend server
+cd frontend
+npm run dev
+## backend server
+cd backend
+npm run serve
 # configure .env
-npm run frontend
+
 ```
 
 ### `.env` Example

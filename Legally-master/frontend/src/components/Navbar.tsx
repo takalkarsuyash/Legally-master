@@ -27,9 +27,9 @@ const Navbar: React.FC = () => {
       { label: "Query", id: "doc-query", path: "/query" },
       { label: "Draft", id: "draft", path: "/draft" },
       {
-        label: "Diary",
-        id: "advocate-diary",
-        path: "/diary",
+        label: "Property Tax",
+        id: "property-tax",
+        path: "/property-tax",
       },
       {
         label: "Find Lawyer",

@@ -7,7 +7,7 @@ import LandingPage from "./pages/LandingPage";
 import Summarisation from "./pages/Summarisation";
 import DocumentQuery from "./pages/DocumentQuery";
 import Draft from "./pages/Draft";
-import AdvocateDiary from "./pages/AdvocateDiary";
+import PropertyTax from "./pages/PropertyTax";
 import ChatSection from "./components/Chatbot";
 import FindLawyer from "./pages/FindLawyer";
 import ProfilePage from "./pages/ProfilePage";
@@ -63,10 +63,10 @@ const AppContent: React.FC = () => {
             }
           />
           <Route
-            path="/diary"
+            path="/property-tax"
             element={
               <ProtectedRoute>
-                <AdvocateDiary />
+                <PropertyTax />
               </ProtectedRoute>
             }
           />

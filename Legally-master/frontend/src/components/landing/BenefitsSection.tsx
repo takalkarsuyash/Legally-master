@@ -144,7 +144,7 @@ const BenefitsSection: React.FC = () => {
               Ready to Experience These Features?
             </h3>
             <p className="mb-4 text-sm text-gray-600 sm:mb-6 sm:text-base">
-              Join thousands of legal professionals already using LegalEase to transform their practice
+              “Thousands trust LegalEase to cut confusion and take control of their legal decisions.”
             </p>
             <div className="flex flex-col gap-3 justify-center sm:flex-row sm:gap-4">
               <motion.button
