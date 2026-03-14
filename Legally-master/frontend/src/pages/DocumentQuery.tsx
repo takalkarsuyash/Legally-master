@@ -59,7 +59,7 @@ interface FileInfo {
 }
 
 const DocumentQuery: FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState<string>("");
   const [file, setFile] = useState<FileType | null>(null);
@@ -317,12 +317,27 @@ const DocumentQuery: FC = () => {
       };
       setStreamingMessage(streamingMsg);
 
+      // Determine requested language based on i18n
+      const currentConfigLang = i18n.language || "en";
+      let languageName = "English";
+      if (currentConfigLang === "mr") languageName = "Marathi";
+      if (currentConfigLang === "hi") languageName = "Hindi";
+      if (currentConfigLang === "gu") languageName = "Gujarati";
+      if (currentConfigLang === "ta") languageName = "Tamil";
+      if (currentConfigLang === "kn") languageName = "Kannada";
+
+      // Inject system instruction so the AI responds in the correct language
+      let localizedPrompt = userInput;
+      if (languageName !== "English") {
+         localizedPrompt = `[CRITICAL INSTRUCTION: You MUST translate and respond to the following query ENTIRELY in the ${languageName} language. Do NOT use English for your response.]\n\n${userInput}`;
+      }
+
       if (useASI) {
         // Use ASI agents for A2A protocol
-        await processWithASI(userInput, streamingMsg);
+        await processWithASI(localizedPrompt, streamingMsg);
       } else {
         // Use original Gemini agents
-        await processWithGemini(userInput, streamingMsg);
+        await processWithGemini(localizedPrompt, streamingMsg);
       }
     } catch (error) {
       console.error("Error processing message:", error);

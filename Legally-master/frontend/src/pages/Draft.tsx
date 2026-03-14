@@ -41,7 +41,7 @@ const getPlaceholderForDocumentType = (documentType: DocumentType | undefined): 
 };
 
 const LegalDocumentGenerator: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   // Main content states
   const [generatedContent, setGeneratedContent] = useState<string>('');
   const [isStreaming, setIsStreaming] = useState<boolean>(false);
@@ -180,11 +180,28 @@ const LegalDocumentGenerator: React.FC = () => {
         return;
       }
 
+      // Determine requested language based on i18n
+      const currentConfigLang = i18n.language || "en";
+      let languageName = "English";
+      if (currentConfigLang === "mr") languageName = "Marathi";
+      if (currentConfigLang === "hi") languageName = "Hindi";
+      if (currentConfigLang === "gu") languageName = "Gujarati";
+      if (currentConfigLang === "ta") languageName = "Tamil";
+      if (currentConfigLang === "kn") languageName = "Kannada";
+
+      // Clone data to avoid mutating react-hook-form state
+      const requestData = { ...data };
+
+      // Inject language instruction
+      if (languageName !== "English") {
+        requestData.additionalDetails = `[CRITICAL INSTRUCTION: You MUST translate and write this ENTIRE legal document in the ${languageName} language. Do NOT use English.]\n\n` + requestData.additionalDetails;
+      }
+
       if (useStreaming) {
         setIsStreaming(true);
-        await DraftService.streamDocument(data, handleStreamChunk);
+        await DraftService.streamDocument(requestData, handleStreamChunk);
       } else {
-        let document = await DraftService.generateDocument(data);
+        let document = await DraftService.generateDocument(requestData);
         
         // Clean the document to remove ASI footers/disclaimers
         const footerPatterns = [
