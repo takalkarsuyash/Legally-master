@@ -65,7 +65,7 @@ const LawyerChatModal: React.FC<LawyerChatModalProps> = ({
       } lawyer with ${lawyer.experience} years of experience. ${
         lawyer.description
       }. You speak ${lawyer.languages.join(
-        ", "
+        ", ",
       )}. Your achievements include: ${lawyer.achievements.join(", ")}.
 
 IMPORTANT INSTRUCTIONS:
@@ -82,7 +82,7 @@ IMPORTANT INSTRUCTIONS:
       const chatMessages: ASIMessage[] = [
         { role: "system", content: systemPrompt },
         ...messages.map(
-          (msg) => ({ role: msg.role, content: msg.content } as ASIMessage)
+          (msg) => ({ role: msg.role, content: msg.content }) as ASIMessage,
         ),
         { role: "user", content: inputMessage },
       ];
@@ -137,7 +137,7 @@ IMPORTANT INSTRUCTIONS:
 
   const handlePaymentSuccess = (response: any) => {
     alert(
-      `Payment successful! Booking confirmed with ${lawyer.name}.\n\nPayment ID: ${response.razorpay_payment_id}`
+      `Payment successful! Booking confirmed with ${lawyer.name}.\n\nPayment ID: ${response.razorpay_payment_id}`,
     );
   };
 

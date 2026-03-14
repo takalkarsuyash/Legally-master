@@ -23,6 +23,7 @@ import { asiService, ASIModel } from '../services/asiService';
 import { asiDocumentChatService } from '../services/asiDocumentChatService';
 import { useWallet } from '../contexts/WalletContext';
 import { jsPDF } from 'jspdf';
+import { NotoSansDevanagari } from '../assets/NotoSansDevanagariBase64.js';
 import toast from 'react-hot-toast';
 
 interface Step {
@@ -45,7 +46,7 @@ interface FileInfo {
 }
 
 const DocumentSummarizer: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const steps: Step[] = useMemo(() => [
     {
@@ -180,7 +181,7 @@ const DocumentSummarizer: React.FC = () => {
       if (selectedFile.name.includes('complaint') || selectedFile.name.includes('lawsuit')) documentType = "lawsuit";
       if (selectedFile.name.includes('will') || selectedFile.name.includes('testament')) documentType = "will";
 
-      const prompt = getLegalDocumentSummaryPrompt(documentType);
+      const prompt = getLegalDocumentSummaryPrompt(documentType, i18n.language);
 
       // Call the Gemini API through our service for summarization
       const result = await summarizeDocument(selectedFile, prompt);
@@ -210,6 +211,33 @@ const DocumentSummarizer: React.FC = () => {
       setIsProcessing(false);
     }
   };
+
+  // Effect to re-summarize when language changes
+  useEffect(() => {
+    const refreshSummary = async () => {
+      if (file && activeStep === 2 && !isProcessing) {
+        setIsProcessing(true);
+        try {
+          let documentType = "unknown";
+          if (file.name.endsWith('.pdf')) documentType = "document";
+          if (file.name.includes('contract')) documentType = "contract";
+          if (file.name.includes('complaint') || file.name.includes('lawsuit')) documentType = "lawsuit";
+          if (file.name.includes('will') || file.name.includes('testament')) documentType = "will";
+
+          const prompt = getLegalDocumentSummaryPrompt(documentType, i18n.language);
+          const result = await summarizeDocument(file, prompt);
+          setSummary(result);
+        } catch (error) {
+          console.error("Failed to refresh summary on language change:", error);
+          toast.error("Failed to update summary language");
+        } finally {
+          setIsProcessing(false);
+        }
+      }
+    };
+
+    refreshSummary();
+  }, [i18n.language]);
 
   const initializeDocumentChat = async (documentFile: File, initialPrompt: string): Promise<string> => {
     try {
@@ -835,53 +863,67 @@ const DocumentSummarizer: React.FC = () => {
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={() => {
-                        const doc = new jsPDF();
-                        
-                        // Add title
-                        doc.setFontSize(20);
-                        doc.setTextColor(156, 127, 0); // Primary color
-                        doc.text("Legal Document Summary", 20, 20);
-                        
-                        // Add content
-                        doc.setFontSize(12);
-                        doc.setTextColor(0, 0, 0);
-                        
-                        // Split text to fit page width
-                        const pageWidth = doc.internal.pageSize.getWidth();
-                        const margin = 20;
-                        const maxWidth = pageWidth - (margin * 2);
-                        
-                        // Clean markdown symbols roughly for better PDF look
-                        const cleanText = summary
-                          .replace(/\*\*/g, "") // Remove bold
-                          .replace(/#/g, "")    // Remove headers
-                          .replace(/`/g, "")    // Remove code
-                          .replace(/\[(.*?)\]\(.*?\)/g, "$1"); // Remove links
+                        try {
+                          const doc = new jsPDF();
+                          
+                          // Add our custom font for Hindi/Marathi support!
+                          doc.addFileToVFS('NotoSansDevanagari.ttf', NotoSansDevanagari);
+                          doc.addFont('NotoSansDevanagari.ttf', 'NotoSansDevanagari', 'normal');
+                          
+                          // Set default font to our new unicode TTF fallback
+                          doc.setFont('NotoSansDevanagari');
 
-                        const textLines = doc.splitTextToSize(cleanText, maxWidth);
-                        
-                        // Add text with pagination
-                        let y = 40;
-                        const lineHeight = 7;
-                        
-                        textLines.forEach((line: string) => {
-                          if (y > 280) {
-                            doc.addPage();
-                            y = 20;
-                          }
-                          doc.text(line, margin, y);
-                          y += lineHeight;
-                        });
-                        
-                        doc.save("legal_summary.pdf");
-                        toast.success("Summary downloaded as PDF");
+                          // Add title
+                          doc.setFontSize(20);
+                          doc.setTextColor(156, 127, 0); // Primary color
+                          doc.text("Legal Document Summary", 20, 20);
+                          
+                          // Add content
+                          doc.setFontSize(12);
+                          doc.setTextColor(0, 0, 0);
+                          
+                          // jsPDF by default does not render complex non-latin scripts (like Marathi/Devanagari) properly
+                          // without a custom TTF font embedded. To bypass this while avoiding the Tailwind 'oklch' CSS
+                          // crashing bug from HTML snapshotting libraries, we add a generic unicode fallback config.
+                          // It may not be perfect typography, but it will print the unicode string bytes.
+                          const pageWidth = doc.internal.pageSize.getWidth();
+                          const margin = 20;
+                          const maxWidth = pageWidth - (margin * 2);
+                          
+                          // Clean markdown symbols roughly for better PDF look
+                          const cleanText = summary
+                            .replace(/\*\*/g, "") // Remove bold
+                            .replace(/#/g, "")    // Remove headers
+                            .replace(/`/g, "")    // Remove code
+                            .replace(/\[(.*?)\]\(.*?\)/g, "$1"); // Remove links
+
+                          // Ensure Unicode text split
+                          const textLines = doc.splitTextToSize(cleanText, maxWidth);
+                          
+                          // Add text with pagination
+                          let y = 35;
+                          const lineHeight = 7;
+                          
+                          textLines.forEach((line: string) => {
+                            if (y > 280) {
+                              doc.addPage();
+                              y = 20;
+                            }
+                            doc.text(line, margin, y);
+                            y += lineHeight;
+                          });
+
+                          doc.save(`legal_summary_${Date.now()}.pdf`);
+                          toast.success("Summary downloaded as PDF");
+                        } catch (err) {
+                          console.error('PDF generation error:', err);
+                          toast.error("Failed to generate PDF");
+                        }
                       }}
                       className="flex justify-center items-center px-4 py-2 space-x-2 text-xs text-white bg-gradient-to-r rounded-xl shadow-lg transition-all sm:px-6 sm:py-4 sm:space-x-3 sm:text-base from-secondary to-primary hover:shadow-xl"
                     >
-                      <Download className="w-3 h-3 sm:w-5 sm:h-5" />
-                      <span className="font-semibold">Download PDF</span>
+                      <span className="font-semibold">{t('summarisation.panel.download_pdf') || 'Download PDF'}</span>
                     </motion.button>
-
                     <motion.button
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}

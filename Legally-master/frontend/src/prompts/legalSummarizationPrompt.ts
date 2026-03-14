@@ -1,11 +1,12 @@
 /**
  * Prompt template for legal document summarization
  */
-export const getLegalDocumentSummaryPrompt = (documentType?: string): string => {
+export const getLegalDocumentSummaryPrompt = (documentType?: string, language: string = 'en'): string => {
   const basePrompt = `
-You are an expert legal assistant specializing in document analysis and summarization. Please analyze the following legal document and provide a comprehensive yet concise summary using Markdown formatting.
+You are an expert legal assistant specializing in document analysis and summarization. Please analyze the following legal document and provide a comprehensive yet concise summary in ${language === 'hi' ? 'Hindi (हिंदी)' : language === 'mr' ? 'Marathi (मराठी)' : 'English'}.
 
 Your summary MUST:
+- Be written ENTIRELY in ${language === 'hi' ? 'Hindi (हिंदी)' : language === 'mr' ? 'Marathi (मराठी)' : 'English'}
 - Use proper Markdown syntax throughout (headings with #, lists with -, etc.)
 - Be structured with clear headings for each section
 - Include concise bullet points rather than paragraphs wherever possible

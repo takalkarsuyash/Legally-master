@@ -2,7 +2,12 @@ import React from "react";
 import { useState, useCallback, useMemo, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
+import {
+  motion,
+  AnimatePresence,
+  useScroll,
+  useMotionValueEvent,
+} from "framer-motion";
 import { Menu, X } from "lucide-react";
 import logo from "../assets/logo.png";
 import { useAuth } from "../contexts/AuthContext";
@@ -26,7 +31,11 @@ const Navbar: React.FC = () => {
 
   const navItems: ReadonlyArray<NavItem> = useMemo(
     () => [
-      { label: t("navbar.summarisation"), id: "summarisation", path: "/summarisation" },
+      {
+        label: t("navbar.summarisation"),
+        id: "summarisation",
+        path: "/summarisation",
+      },
       { label: t("navbar.query"), id: "doc-query", path: "/query" },
       { label: t("navbar.draft"), id: "draft", path: "/draft" },
       {
@@ -59,7 +68,7 @@ const Navbar: React.FC = () => {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
-      if (isMobileMenuOpen && !target.closest('.mobile-menu-button')) {
+      if (isMobileMenuOpen && !target.closest(".mobile-menu-button")) {
         setIsMobileMenuOpen(false);
       }
     };
@@ -70,25 +79,27 @@ const Navbar: React.FC = () => {
     };
   }, [isMobileMenuOpen]);
 
-
-
   return (
     <>
       <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ type: "spring", stiffness: 100, damping: 20 }}
-        className={`sticky top-0 w-full z-50 transition-all duration-300 ${location.pathname === "/"
-          ? isScrolled
-            ? "py-2 shadow-lg backdrop-blur-lg bg-white/98 border-b border-gray-100"
-            : "py-3 bg-gradient-to-br from-gray-50 to-white backdrop-blur-sm"
-          : "py-3 bg-gradient-to-br from-background via-background to-primary/10 backdrop-blur-xl shadow-lg border-b border-white/30"
-          }`}
+        className={`sticky top-0 w-full z-50 transition-all duration-300 ${
+          location.pathname === "/"
+            ? isScrolled
+              ? "py-2 shadow-lg backdrop-blur-lg bg-white/98 border-b border-gray-100"
+              : "py-3 bg-gradient-to-br from-gray-50 to-white backdrop-blur-sm"
+            : "py-3 bg-gradient-to-br from-background via-background to-primary/10 backdrop-blur-xl shadow-lg border-b border-white/30"
+        }`}
       >
         <div className="container px-6 mx-auto">
           <div className="flex justify-between items-center h-16">
             {/* Logo positioned to the left with margin adjustment */}
-            <Link to="/" className="flex flex-shrink-0 items-center -ml-4 group md:-ml-6 lg:-ml-8">
+            <Link
+              to="/"
+              className="flex flex-shrink-0 items-center -ml-4 group md:-ml-6 lg:-ml-8"
+            >
               <img
                 src={logo}
                 alt="LegalEase Logo"
@@ -112,18 +123,24 @@ const Navbar: React.FC = () => {
               transition={{ delay: 0.3, staggerChildren: 0.1 }}
             >
               {navItems.map((item) => (
-                <motion.div key={item.id} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <motion.div
+                  key={item.id}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
                   <Link
                     to={item.path}
-                    className={`transition-colors relative ${location.pathname === "/"
-                      ? "text-gray-700 hover:text-primary"
-                      : "text-gray-700 hover:text-primary"
-                      } ${location.pathname === item.path
+                    className={`transition-colors relative ${
+                      location.pathname === "/"
+                        ? "text-gray-700 hover:text-primary"
+                        : "text-gray-700 hover:text-primary"
+                    } ${
+                      location.pathname === item.path
                         ? location.pathname === "/"
                           ? "font-semibold text-primary"
                           : "font-semibold text-primary"
                         : ""
-                      }`}
+                    }`}
                   >
                     {item.label}
                     {location.pathname === item.path && (
@@ -138,12 +155,15 @@ const Navbar: React.FC = () => {
               {/* Auth Button */}
               <motion.div>
                 {user ? (
-                   <Link to="/profile">
-                     <ProfileImage className="w-10 h-10 cursor-pointer hover:ring-2 hover:ring-primary transition-all" />
-                   </Link>
+                  <Link to="/profile">
+                    <ProfileImage className="w-10 h-10 cursor-pointer hover:ring-2 hover:ring-primary transition-all" />
+                  </Link>
                 ) : (
-                  <Link to="/login" className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition font-semibold">
-                     {t("navbar.login")}
+                  <Link
+                    to="/login"
+                    className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition font-semibold"
+                  >
+                    {t("navbar.login")}
                   </Link>
                 )}
               </motion.div>
@@ -201,8 +221,12 @@ const Navbar: React.FC = () => {
               animate="open"
               exit="closed"
               variants={{
-                open: { transition: { staggerChildren: 0.07, delayChildren: 0.2 } },
-                closed: { transition: { staggerChildren: 0.05, staggerDirection: -1 } },
+                open: {
+                  transition: { staggerChildren: 0.07, delayChildren: 0.2 },
+                },
+                closed: {
+                  transition: { staggerChildren: 0.05, staggerDirection: -1 },
+                },
               }}
             >
               <div className="space-y-1">
@@ -217,15 +241,17 @@ const Navbar: React.FC = () => {
                   >
                     <Link
                       to={item.path}
-                      className={`block py-2.5 px-3 transition-all duration-200 rounded-md ${location.pathname === "/"
-                        ? "text-gray-700 hover:text-primary hover:bg-primary/5"
-                        : "text-gray-700 hover:text-primary hover:bg-primary/5"
-                        } ${location.pathname === item.path
+                      className={`block py-2.5 px-3 transition-all duration-200 rounded-md ${
+                        location.pathname === "/"
+                          ? "text-gray-700 hover:text-primary hover:bg-primary/5"
+                          : "text-gray-700 hover:text-primary hover:bg-primary/5"
+                      } ${
+                        location.pathname === item.path
                           ? location.pathname === "/"
                             ? "font-semibold text-primary bg-primary/5"
                             : "font-semibold text-primary bg-primary/5"
                           : "hover:translate-x-1"
-                        }`}
+                      }`}
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       {item.label}
@@ -265,7 +291,7 @@ const Navbar: React.FC = () => {
         )}
       </AnimatePresence>
     </>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
