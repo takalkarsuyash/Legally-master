@@ -166,8 +166,14 @@ export default function PropertyTaxForm() {
   const labelClass = "block mb-2 text-sm font-bold text-gray-800 flex items-center gap-2";
 
   const cityOptions = [
-    "Delhi", "Bangalore", "Hyderabad", "Ahmedabad", 
-    "Chennai", "Kolkata", "Mumbai", "Pune"
+    { value: "Delhi", label: t('property_tax.form.cities.delhi') },
+    { value: "Bangalore", label: t('property_tax.form.cities.bangalore') },
+    { value: "Hyderabad", label: t('property_tax.form.cities.hyderabad') },
+    { value: "Ahmedabad", label: t('property_tax.form.cities.ahmedabad') },
+    { value: "Chennai", label: t('property_tax.form.cities.chennai') },
+    { value: "Kolkata", label: t('property_tax.form.cities.kolkata') },
+    { value: "Mumbai", label: t('property_tax.form.cities.mumbai') },
+    { value: "Pune", label: t('property_tax.form.cities.pune') }
   ];
 
   const zoneOptions = [
@@ -420,7 +426,7 @@ export default function PropertyTaxForm() {
                                 ₹ {Number(result.taxAmount).toLocaleString('en-IN', { maximumFractionDigits: 2 })}
                             </div>
                             <p className="text-sm text-gray-600 mt-2">
-                                {t('property_tax.result.disclaimer', { system: result.system, city: city })}
+                                {t('property_tax.result.disclaimer', { system: result.system, city: t(`property_tax.form.cities.${city.toLowerCase()}`) })}
                             </p>
                         </div>
                     </div>
