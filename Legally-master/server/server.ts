@@ -11,6 +11,7 @@ import fetch from "node-fetch";
 import LegalMettaService from "./legalMettaService.js";
 import { searchLawyers, getLawyerDetails } from "./services/googlePlaces.js";
 import scoreLawyers from "./utils/lawyerScorer.js";
+import nodemailer from "nodemailer";
 dotenv.config();
 
 const app = express();
@@ -20,6 +21,18 @@ const __dirname = dirname(__filename);
 
 // Initialize MeTTa service
 const mettaService = new LegalMettaService();
+
+// In-memory OTP store for email verification
+const otpStore = new Map<string, { otp: string, expiresAt: number }>();
+
+// Configure nodemailer transporter
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER || '',
+    pass: process.env.EMAIL_PASS || ''
+  }
+});
 
 app.use(cors());
 app.use(express.json());
@@ -199,6 +212,74 @@ app.get("/retrieve", async (req, res) => {
   );
   console.log("Response: ", response);
   res.json({ message: "Retrieve endpoint", data: response });
+});
+
+// OTP Endpoints
+app.post("/api/auth/send-otp", async (req: Request, res: Response) => {
+  try {
+    const { email } = req.body;
+    if (!email || typeof email !== "string") {
+      res.status(400).json({ error: "Email is required" });
+      return;
+    }
+
+    // Generate a 6-digit OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const expiresAt = Date.now() + 10 * 60 * 1000; // 10 minutes from now
+
+    otpStore.set(email.toLowerCase(), { otp, expiresAt });
+
+    console.log(`[OTP] Generated OTP for ${email}: ${otp}`);
+
+    // Attempt to send email if configured
+    if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+      await transporter.sendMail({
+        from: `"LegalEase Accounts" <${process.env.EMAIL_USER}>`,
+        to: email,
+        subject: "Your LegalEase Account Verification Code",
+        text: `Your OTP for account registration is: ${otp}. This code expires in 10 minutes.`,
+        html: `<h2>LegalEase Registration</h2><p>Your OTP for account registration is: <strong>${otp}</strong>.</p><p>This code expires in 10 minutes.</p>`
+      });
+      console.log(`[OTP] Sent email directly to ${email}`);
+    } else {
+      console.log(`[OTP] Email credentials not found in .env. Skipping actual email dispatch.`);
+    }
+
+    res.json({ message: "OTP sent successfully", success: true });
+  } catch (error) {
+    console.error("Error sending OTP:", error);
+    res.status(500).json({ error: "Failed to send OTP", success: false });
+  }
+});
+
+app.post("/api/auth/verify-otp", (req: Request, res: Response) => {
+  const { email, otp } = req.body;
+  if (!email || !otp) {
+    res.status(400).json({ error: "Email and OTP are required" });
+    return;
+  }
+
+  const stored = otpStore.get(email.toLowerCase());
+  
+  if (!stored) {
+    res.status(400).json({ error: "No OTP found for this email. Please request a new one.", success: false });
+    return;
+  }
+
+  if (Date.now() > stored.expiresAt) {
+    otpStore.delete(email.toLowerCase());
+    res.status(400).json({ error: "OTP has expired. Please request a new one.", success: false });
+    return;
+  }
+
+  if (stored.otp !== otp) {
+    res.status(400).json({ error: "Invalid OTP. Please try again.", success: false });
+    return;
+  }
+
+  // OTP is valid
+  otpStore.delete(email.toLowerCase());
+  res.json({ message: "OTP verified successfully", success: true });
 });
 
 app.listen(port, () => {

@@ -4,11 +4,16 @@ import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
 import { DatabaseService } from '../services/databaseService';
-import { Lock, UserPlus } from 'lucide-react';
+import { Lock, UserPlus, Key } from 'lucide-react';
 import { toast } from 'react-hot-toast';
+
+const API_URL = import.meta.env.VITE_SERVER_URL || 'http://localhost:3000';
 
 const SignUp: React.FC = () => {
   const [loading, setLoading] = useState(false);
+  const [step, setStep] = useState<'form' | 'otp'>('form');
+  const [otp, setOtp] = useState('');
+  
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [gender, setGender] = useState('');
@@ -17,12 +22,47 @@ const SignUp: React.FC = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const handleSignUp = async (e: React.FormEvent) => {
+  const handleSendOTP = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-
     try {
-      // 1. Sign up with Supabase Auth
+      const response = await fetch(`${API_URL}/api/auth/send-otp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Failed to send OTP');
+      
+      toast.success('OTP sent to your email!');
+      setStep('otp');
+    } catch (error: any) {
+      console.error('Error sending OTP:', error);
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleVerifyAndSignUp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (otp.length < 6) {
+      toast.error('Please enter a valid 6-digit OTP');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      // 1. Verify OTP with Backend
+      const verifyRes = await fetch(`${API_URL}/api/auth/verify-otp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, otp })
+      });
+      const verifyData = await verifyRes.json();
+      if (!verifyRes.ok) throw new Error(verifyData.error || 'OTP verification failed');
+
+      // 2. Sign up with Supabase Auth since OTP is verified
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
@@ -39,7 +79,7 @@ const SignUp: React.FC = () => {
       if (error) throw error;
 
       if (data.user) {
-        // 2. Create User Profile immediately
+        // 3. Create User Profile immediately
         await DatabaseService.createUserProfile(
             data.user.id,
             email,
@@ -47,7 +87,7 @@ const SignUp: React.FC = () => {
             lastName
         );
 
-        toast.success("Account created! Please check your email to verify your account.");
+        toast.success("Account verified and created successfully!");
         navigate('/login');
       }
     } catch (error: any) {
@@ -63,17 +103,18 @@ const SignUp: React.FC = () => {
       <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-2xl shadow-xl backdrop-blur-sm bg-opacity-90 border border-gray-100">
         <div className="text-center">
           <div className="mx-auto h-12 w-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
-             <UserPlus className="h-6 w-6 text-primary" />
+             {step === 'otp' ? <Key className="h-6 w-6 text-primary" /> : <UserPlus className="h-6 w-6 text-primary" />}
           </div>
           <h2 className="mt-2 text-3xl font-extrabold text-gray-900">
-            {t('auth.signup.title')}
+            {step === 'otp' ? 'Verify your Email' : t('auth.signup.title')}
           </h2>
           <p className="mt-2 text-sm text-gray-600">
-            {t('auth.signup.subtitle')}
+            {step === 'otp' ? `We sent a code to ${email}` : t('auth.signup.subtitle')}
           </p>
         </div>
 
-        <form className="mt-8 space-y-6" onSubmit={handleSignUp}>
+        {step === 'form' ? (
+          <form className="mt-8 space-y-6" onSubmit={handleSendOTP}>
           <div className="rounded-md shadow-sm space-y-4">
             <div className="flex gap-4">
                 <div className="flex-1">
@@ -155,10 +196,45 @@ const SignUp: React.FC = () => {
               disabled={loading}
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 transition-colors"
             >
-              {loading ? t('auth.signup.submitting') : t('auth.signup.submit')}
+              {loading ? 'Sending Code...' : t('auth.signup.submit')}
             </button>
           </div>
         </form>
+        ) : (
+          <form className="mt-8 space-y-6" onSubmit={handleVerifyAndSignUp}>
+            <div>
+              <label htmlFor="otp" className="sr-only">One-Time Password</label>
+              <input
+                id="otp"
+                name="otp"
+                type="text"
+                required
+                maxLength={6}
+                className="appearance-none rounded-lg relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-xl text-center font-mono tracking-[0.5em]"
+                placeholder="------"
+                value={otp}
+                onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))}
+              />
+            </div>
+            <div className="flex gap-3">
+              <button
+                type="button"
+                onClick={() => setStep('form')}
+                disabled={loading}
+                className="w-1/3 flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 transition-colors"
+              >
+                Back
+              </button>
+              <button
+                type="submit"
+                disabled={loading || otp.length < 6}
+                className="w-2/3 flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 transition-colors"
+              >
+                {loading ? 'Verifying...' : 'Verify & Create Account'}
+              </button>
+            </div>
+          </form>
+        )}
         
         <div className="text-center text-sm">
             <span className="text-gray-500">{t('auth.signup.already_have_account')} </span>
