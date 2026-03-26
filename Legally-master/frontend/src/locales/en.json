@@ -186,6 +186,16 @@
         "rent": "e.g. 15000",
         "value": "e.g. 5000000"
       },
+      "cities": {
+        "delhi": "Delhi",
+        "bangalore": "Bangalore",
+        "hyderabad": "Hyderabad",
+        "ahmedabad": "Ahmedabad",
+        "chennai": "Chennai",
+        "kolkata": "Kolkata",
+        "mumbai": "Mumbai",
+        "pune": "Pune"
+      },
       "options": {
         "residential": "Residential",
         "commercial": "Commercial",
