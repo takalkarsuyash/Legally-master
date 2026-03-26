@@ -207,6 +207,10 @@
                 "zone_b": "झोन B",
                 "zone_c": "झोन C"
             }
+        },
+        "result": {
+            "title": "अंदाजित कर रक्कम",
+            "disclaimer": "{{city}} साठी {{system}} प्रणालीवर आधारित."
         }
     },
     "find_lawyer": {
