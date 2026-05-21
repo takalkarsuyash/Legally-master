@@ -1,6 +1,7 @@
 import { spawn } from 'child_process';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import fs from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -14,7 +15,11 @@ class LegalMettaService {
 
     async query(query: string): Promise<any> {
         return new Promise((resolve, reject) => {
-            const python = spawn('python3', [this.pythonPath, query], {
+            // Use the virtual environment Python interpreter if it exists, otherwise fall back to system python3
+            const venvPythonPath = path.join(__dirname, '..', 'metta', 'venv', 'bin', 'python3');
+            const pythonExecutable = fs.existsSync(venvPythonPath) ? venvPythonPath : 'python3';
+            
+            const python = spawn(pythonExecutable, [this.pythonPath, query], {
                 cwd: path.join(__dirname, '..'),
                 env: {
                     ...process.env,
