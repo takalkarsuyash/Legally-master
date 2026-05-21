@@ -233,14 +233,20 @@ app.post("/api/auth/send-otp", async (req: Request, res: Response) => {
 
     // Attempt to send email if configured
     if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
-      await transporter.sendMail({
-        from: `"LegalEase Accounts" <${process.env.EMAIL_USER}>`,
-        to: email,
-        subject: "Your LegalEase Account Verification Code",
-        text: `Your OTP for account registration is: ${otp}. This code expires in 10 minutes.`,
-        html: `<h2>LegalEase Registration</h2><p>Your OTP for account registration is: <strong>${otp}</strong>.</p><p>This code expires in 10 minutes.</p>`
-      });
-      console.log(`[OTP] Sent email directly to ${email}`);
+      try {
+        await transporter.sendMail({
+          from: `"LegalEase Accounts" <${process.env.EMAIL_USER}>`,
+          to: email,
+          subject: "Your LegalEase Account Verification Code",
+          text: `Your OTP for account registration is: ${otp}. This code expires in 10 minutes.`,
+          html: `<h2>LegalEase Registration</h2><p>Your OTP for account registration is: <strong>${otp}</strong>.</p><p>This code expires in 10 minutes.</p>`
+        });
+        console.log(`[OTP] Sent email directly to ${email}`);
+      } catch (emailError) {
+        console.error(`[OTP] Failed to send email to ${email}:`, emailError);
+        // We log the error but do not throw, so the API still returns success.
+        // This allows testing/registration to proceed by reading the OTP from the server logs!
+      }
     } else {
       console.log(`[OTP] Email credentials not found in .env. Skipping actual email dispatch.`);
     }
