@@ -20,6 +20,7 @@ declare global {
 }
 
 const USE_GROQ = import.meta.env.VITE_GROQ_API_KEY ? true : false;
+const API_URL = import.meta.env.VITE_SERVER_URL || 'http://localhost:3000';
 
 let groqClient: any = null;
 if (USE_GROQ) {
@@ -342,7 +343,7 @@ const LegaleChatbot: React.FC = () => {
   const handleSendWithMeTTa = async (userInput: string): Promise<string> => {
     try {
       const response = await axios.post(
-        'http://localhost:5001/api/metta-query',
+        `${API_URL}/api/metta-query`,
         { query: userInput },
         {
           headers: {

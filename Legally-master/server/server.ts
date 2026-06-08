@@ -26,13 +26,33 @@ const mettaService = new LegalMettaService();
 const otpStore = new Map<string, { otp: string, expiresAt: number }>();
 
 // Configure nodemailer transporter
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER || '',
-    pass: process.env.EMAIL_PASS || ''
-  }
-});
+const smtpHost = process.env.SMTP_HOST || '';
+const smtpPort = parseInt(process.env.SMTP_PORT || '587');
+const smtpSecure = process.env.SMTP_SECURE === 'true';
+
+let transporter: nodemailer.Transporter;
+
+if (smtpHost) {
+  console.log(`[SMTP] Using custom SMTP server: ${smtpHost}:${smtpPort}`);
+  transporter = nodemailer.createTransport({
+    host: smtpHost,
+    port: smtpPort,
+    secure: smtpSecure,
+    auth: {
+      user: process.env.EMAIL_USER || '',
+      pass: process.env.EMAIL_PASS || ''
+    }
+  });
+} else {
+  console.log(`[SMTP] Using Gmail service fallback`);
+  transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.EMAIL_USER || '',
+      pass: process.env.EMAIL_PASS || ''
+    }
+  });
+}
 
 app.use(cors());
 app.use(express.json());
@@ -235,7 +255,7 @@ app.post("/api/auth/send-otp", async (req: Request, res: Response) => {
     if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
       try {
         await transporter.sendMail({
-          from: `"LegalEase Accounts" <${process.env.EMAIL_USER}>`,
+          from: process.env.EMAIL_FROM || `"LegalEase Accounts" <${process.env.EMAIL_USER}>`,
           to: email,
           subject: "Your LegalEase Account Verification Code",
           text: `Your OTP for account registration is: ${otp}. This code expires in 10 minutes.`,
