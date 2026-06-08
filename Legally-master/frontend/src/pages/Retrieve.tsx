@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 
+const API_URL = import.meta.env.VITE_SERVER_URL || 'http://localhost:3000';
+
 const Retrieve = () => {
   const [files, setFiles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -9,7 +11,7 @@ const Retrieve = () => {
     const fetchFiles = async () => {
       try {
         setLoading(true);
-        const res = await fetch("http://localhost:3000/retrieve");
+        const res = await fetch(`${API_URL}/retrieve`);
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         const data = await res.json();
         console.log("API response:", data?.data?.data?.fileList);
