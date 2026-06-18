@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const API_URL = import.meta.env.VITE_SERVER_URL || 'http://localhost:3000';
+const API_URL = import.meta.env.VITE_SERVER_URL || '';
 
 const Retrieve = () => {
   const [files, setFiles] = useState<any[]>([]);

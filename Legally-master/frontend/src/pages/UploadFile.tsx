@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import { useTranslation } from 'react-i18next';
 import { useHash } from "../contexts/HashContext";
 
-const API_URL = import.meta.env.VITE_SERVER_URL || 'http://localhost:3000';
+const API_URL = import.meta.env.VITE_SERVER_URL || '';
 
 const UploadFile = () => {
   const { t } = useTranslation();

@@ -7,7 +7,7 @@ import { DatabaseService } from '../services/databaseService';
 import { Lock, UserPlus, Key } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 
-const API_URL = import.meta.env.VITE_SERVER_URL || 'http://localhost:3000';
+const API_URL = import.meta.env.VITE_SERVER_URL || '';
 
 const SignUp: React.FC = () => {
   const [loading, setLoading] = useState(false);

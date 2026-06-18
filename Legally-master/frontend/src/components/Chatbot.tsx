@@ -20,7 +20,7 @@ declare global {
 }
 
 const USE_GROQ = import.meta.env.VITE_GROQ_API_KEY ? true : false;
-const API_URL = import.meta.env.VITE_SERVER_URL || 'http://localhost:3000';
+const API_URL = import.meta.env.VITE_SERVER_URL || '';
 
 let groqClient: any = null;
 if (USE_GROQ) {

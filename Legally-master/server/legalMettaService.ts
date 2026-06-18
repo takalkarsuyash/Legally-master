@@ -15,9 +15,15 @@ class LegalMettaService {
 
     async query(query: string): Promise<any> {
         return new Promise((resolve, reject) => {
-            // Use the virtual environment Python interpreter if it exists, otherwise fall back to system python3
-            const venvPythonPath = path.join(__dirname, '..', 'metta', 'venv', 'bin', 'python3');
-            const pythonExecutable = fs.existsSync(venvPythonPath) ? venvPythonPath : 'python3';
+            // Use the virtual environment Python interpreter if it exists, otherwise fall back to system python
+            let pythonExecutable = 'python3';
+            if (process.platform === 'win32') {
+                const venvWinPath = path.join(__dirname, '..', 'metta', 'venv', 'Scripts', 'python.exe');
+                pythonExecutable = fs.existsSync(venvWinPath) ? venvWinPath : 'python';
+            } else {
+                const venvUnixPath = path.join(__dirname, '..', 'metta', 'venv', 'bin', 'python3');
+                pythonExecutable = fs.existsSync(venvUnixPath) ? venvUnixPath : 'python3';
+            }
             
             const python = spawn(pythonExecutable, [this.pythonPath, query], {
                 cwd: path.join(__dirname, '..'),
