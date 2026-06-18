@@ -26,6 +26,8 @@ export default defineConfig({
     'process.env': {},
     // For IPFS libraries that check for the Node.js process
     'global': {},
+    // Hardcode VITE_SERVER_URL to empty string to enforce relative paths and proxying
+    'import.meta.env.VITE_SERVER_URL': JSON.stringify(''),
   },
   resolve: {
     alias: {
