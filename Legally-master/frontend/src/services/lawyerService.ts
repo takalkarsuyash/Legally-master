@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const API_URL = import.meta.env.VITE_SERVER_URL || '';
+console.log('[LawyerService] Resolved API_URL:', API_URL);
 
 export interface Lawyer {
     id: string;
