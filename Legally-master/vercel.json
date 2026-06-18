@@ -5,15 +5,15 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "http://16.171.12.83:3000/api/:path*"
+      "destination": "/api/proxy"
     },
     {
       "source": "/upload",
-      "destination": "http://16.171.12.83:3000/upload"
+      "destination": "/api/proxy"
     },
     {
       "source": "/retrieve",
-      "destination": "http://16.171.12.83:3000/retrieve"
+      "destination": "/api/proxy"
     },
     {
       "source": "/(.*)",
