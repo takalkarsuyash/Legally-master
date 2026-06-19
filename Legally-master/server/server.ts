@@ -262,10 +262,10 @@ app.post("/api/auth/send-otp", async (req: Request, res: Response) => {
           html: `<h2>LegalEase Registration</h2><p>Your OTP for account registration is: <strong>${otp}</strong>.</p><p>This code expires in 10 minutes.</p>`
         });
         console.log(`[OTP] Sent email directly to ${email}`);
-      } catch (emailError) {
+      } catch (emailError: any) {
         console.error(`[OTP] Failed to send email to ${email}:`, emailError);
-        // We log the error but do not throw, so the API still returns success.
-        // This allows testing/registration to proceed by reading the OTP from the server logs!
+        res.status(500).json({ error: `Failed to send verification email: ${emailError.message || emailError}`, success: false });
+        return;
       }
     } else {
       console.log(`[OTP] Email credentials not found in .env. Skipping actual email dispatch.`);
