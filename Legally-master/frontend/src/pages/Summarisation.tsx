@@ -184,14 +184,27 @@ const DocumentSummarizer: React.FC = () => {
       const prompt = getLegalDocumentSummaryPrompt(documentType, i18n.language);
 
       // Call the Gemini API through our service for summarization
-      const result = await summarizeDocument(selectedFile, prompt);
+      let result = '';
+      try {
+        result = await summarizeDocument(selectedFile, prompt);
+      } catch (geminiError) {
+        console.warn('Gemini summarization failed, falling back to ASI:', geminiError);
+        toast.error('Gemini model failed. Trying fallback ASI Model...');
+        result = await asiService.summarizeDocument(selectedFile, prompt, 'asi1-mini');
+      }
       setSummary(result);
 
       // Initialize document context for chat
       const docType = detectDocumentType(selectedFile.name);
       const contextPrompt = `Analyze this document and provide a comprehensive understanding that can be used for answering questions. Focus on key information, entities, dates, and important details.`;
 
-      const context = await initializeDocumentChat(selectedFile, contextPrompt);
+      let context = '';
+      try {
+        context = await initializeDocumentChat(selectedFile, contextPrompt);
+      } catch (chatInitError) {
+        console.warn('Gemini chat initialization failed, falling back to ASI:', chatInitError);
+        context = await asiService.summarizeDocument(selectedFile, contextPrompt, 'asi1-mini');
+      }
       setDocumentContext(context);
 
       // Add welcome message
@@ -225,7 +238,13 @@ const DocumentSummarizer: React.FC = () => {
           if (file.name.includes('will') || file.name.includes('testament')) documentType = "will";
 
           const prompt = getLegalDocumentSummaryPrompt(documentType, i18n.language);
-          const result = await summarizeDocument(file, prompt);
+          let result = '';
+          try {
+            result = await summarizeDocument(file, prompt);
+          } catch (geminiError) {
+            console.warn('Gemini refresh summary failed, falling back to ASI:', geminiError);
+            result = await asiService.summarizeDocument(file, prompt, 'asi1-mini');
+          }
           setSummary(result);
         } catch (error) {
           console.error("Failed to refresh summary on language change:", error);
