@@ -136,7 +136,8 @@
             "summary_title": "दस्तावेज़ सारांश",
             "chat_title": "दस्तावेज़ चैट",
             "view_summary": "सारांश देखें",
-            "ask_questions": "प्रश्न पूछें"
+            "ask_questions": "प्रश्न पूछें",
+            "download_pdf": "पीडीएफ डाउनलोड करें"
         },
         "empty_state": {
             "title": "विश्लेषण के लिए तैयार",

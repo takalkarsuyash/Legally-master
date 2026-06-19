@@ -136,7 +136,8 @@
             "summary_title": "दस्तऐवज सारांश",
             "chat_title": "दस्तऐवज चॅट",
             "view_summary": "सारांश पहा",
-            "ask_questions": "प्रश्न विचारा"
+            "ask_questions": "प्रश्न विचारा",
+            "download_pdf": "पीडीएफ डाउनलोड करा"
         },
         "empty_state": {
             "title": "विश्लेषणासाठी सज्ज",

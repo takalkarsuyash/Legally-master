@@ -136,7 +136,8 @@
       "summary_title": "Document Summary",
       "chat_title": "Document Chat",
       "view_summary": "View Summary",
-      "ask_questions": "Ask Questions"
+      "ask_questions": "Ask Questions",
+      "download_pdf": "Download PDF"
     },
     "empty_state": {
       "title": "Ready to Analyze",

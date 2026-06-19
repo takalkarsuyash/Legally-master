@@ -1,5 +1,6 @@
 
 import { readFileAsBase64 } from '../utils/fileUtils';
+import { documentExtractor } from './documentExtractor';
 
 // ASI Model Types based on modelDocs.md
 export type ASIModel = 'asi1-agentic' | 'asi1-mini' | 'asi1-fast' | 'asi1-extended' | 'asi1-graph';
@@ -182,13 +183,6 @@ export class ASIService {
    */
   async summarizeDocument(file: File, prompt: string, model: ASIModel = 'asi1-mini'): Promise<string> {
     try {
-      const base64Data = await readFileAsBase64(file);
-      // For multimodal support with standard OpenAI endpoints, we use GPT-4 Vision format:
-      // content: [ { type: "text", text: ... }, { type: "image_url", image_url: { url: "data:..." } } ]
-
-      // Check file type. Ideally only images (jpeg/png/gif/webp) work with Vision.
-      // PDFs often need text extraction first, but let's assume image-based for now or basic text.
-
       const isImage = file.type.startsWith('image/');
 
       const content: ASIMessageContent = [
@@ -196,15 +190,15 @@ export class ASIService {
       ];
 
       if (isImage) {
+        const base64Data = await readFileAsBase64(file);
         content.push({
           type: 'image_url',
           image_url: { url: base64Data } // base64Data already includes data:image/...;base64,...
         });
       } else {
-        // Fallback for non-images: append "File content" text if small enough or possible?
-        // Realistically, for generic files we might just verify if the model supports file upload.
-        // For this implementation, we'll strip the file if it's not an image and just append metadata hint.
-        content[0].text += `\n\n[Attached File: ${file.name}]`;
+        // Extract text from the PDF/DOC/TXT file!
+        const extracted = await documentExtractor.extractTextFromFile(file);
+        content[0].text += `\n\nDocument Title: ${file.name}\n\nDocument Content:\n${extracted.text}`;
       }
 
       const messages: ASIMessage[] = [
