@@ -886,11 +886,14 @@ const DocumentSummarizer: React.FC = () => {
                           const doc = new jsPDF();
                           
                           // Add our custom font for Hindi/Marathi support!
-                          doc.addFileToVFS('NotoSansDevanagari.ttf', NotoSansDevanagari);
-                          doc.addFont('NotoSansDevanagari.ttf', 'NotoSansDevanagari', 'normal');
-                          
-                          // Set default font to our new unicode TTF fallback
-                          doc.setFont('NotoSansDevanagari');
+                          const isDevanagari = i18n.language === 'hi' || i18n.language === 'mr';
+                          if (isDevanagari) {
+                            doc.addFileToVFS('NotoSansDevanagari.ttf', NotoSansDevanagari);
+                            doc.addFont('NotoSansDevanagari.ttf', 'NotoSansDevanagari', 'normal');
+                            doc.setFont('NotoSansDevanagari');
+                          } else {
+                            doc.setFont('helvetica');
+                          }
 
                           // Add title
                           doc.setFontSize(20);
