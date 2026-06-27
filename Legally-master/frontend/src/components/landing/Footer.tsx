@@ -45,7 +45,7 @@ const Footer: React.FC = () => {
             <div className="flex gap-3 mt-4">
               {/* X */}
               <a
-                href="https://x.com/takalkar_s85267"
+                // href="https://x.com/takalkar_s85267"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex justify-center items-center w-8 h-8 text-gray-600 bg-gray-100 rounded-full transition-all hover:bg-primary hover:text-white"
@@ -54,7 +54,7 @@ const Footer: React.FC = () => {
               </a>
               {/* GitHub */}
               <a
-                href="https://github.com/takalkarsuyash"
+                // href="https://github.com/takalkarsuyash"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex justify-center items-center w-8 h-8 text-gray-600 bg-gray-100 rounded-full transition-all hover:bg-primary hover:text-white"
@@ -63,7 +63,7 @@ const Footer: React.FC = () => {
               </a>
               {/* LinkedIn */}
               <a
-                href="https://www.linkedin.com/in/suyash-takalkar-1b52b6208/"
+                // href="https://www.linkedin.com/in/suyash-takalkar-1b52b6208/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex justify-center items-center w-8 h-8 text-gray-600 bg-gray-100 rounded-full transition-all hover:bg-primary hover:text-white"
